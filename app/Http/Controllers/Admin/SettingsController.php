@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\FontHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\ThemeHelper;
 use App\Http\Controllers\Controller;
@@ -131,5 +132,103 @@ class SettingsController extends Controller
 
         Cache::flush();
         return back()->with('success', 'Paleta restaurada a los valores por defecto.');
+    }
+
+    public function typography(): View
+    {
+        $headingFonts  = FontHelper::headingFonts();
+        $bodyFonts     = FontHelper::bodyFonts();
+        $sizeScales    = FontHelper::sizeScales();
+        $selected      = FontHelper::selected();
+        $customHeading = FontHelper::customFont('heading');
+        $customBody    = FontHelper::customFont('body');
+
+        return view('admin.settings.typography', compact(
+            'headingFonts', 'bodyFonts', 'sizeScales', 'selected', 'customHeading', 'customBody'
+        ));
+    }
+
+    public function updateTypography(Request $request): RedirectResponse
+    {
+        $headingKeys = array_merge(array_keys(FontHelper::headingFonts()), [FontHelper::CUSTOM_HEADING_KEY]);
+        $bodyKeys    = array_merge(array_keys(FontHelper::bodyFonts()), [FontHelper::CUSTOM_BODY_KEY]);
+
+        $request->validate([
+            'font_heading' => ['required', 'in:' . implode(',', $headingKeys)],
+            'font_body'    => ['required', 'in:' . implode(',', $bodyKeys)],
+            'font_scale'   => ['required', 'in:' . implode(',', array_keys(FontHelper::sizeScales()))],
+        ]);
+
+        if ($request->font_heading === FontHelper::CUSTOM_HEADING_KEY && !FontHelper::customFont('heading')) {
+            return back()->withErrors(['font_heading' => 'Todavía no subiste una tipografía personalizada para títulos.']);
+        }
+        if ($request->font_body === FontHelper::CUSTOM_BODY_KEY && !FontHelper::customFont('body')) {
+            return back()->withErrors(['font_body' => 'Todavía no subiste una tipografía personalizada para texto.']);
+        }
+
+        SettingsHelper::set('font_heading', $request->font_heading, 'appearance');
+        SettingsHelper::set('font_body', $request->font_body, 'appearance');
+        SettingsHelper::set('font_scale', $request->font_scale, 'appearance');
+
+        Cache::flush();
+        return back()->with('success', 'Tipografía actualizada.');
+    }
+
+    public function resetTypography(): RedirectResponse
+    {
+        SettingsHelper::set('font_heading', 'playfair', 'appearance');
+        SettingsHelper::set('font_body', 'inter', 'appearance');
+        SettingsHelper::set('font_scale', '100', 'appearance');
+
+        Cache::flush();
+        return back()->with('success', 'Tipografía restaurada a los valores por defecto.');
+    }
+
+    public function uploadCustomFont(Request $request, string $slot): RedirectResponse
+    {
+        abort_unless(in_array($slot, ['heading', 'body'], true), 404);
+
+        $request->validate([
+            'font_file'  => ['required', 'file', 'max:5120', 'extensions:ttf,otf,woff,woff2'],
+            'font_label' => ['nullable', 'string', 'max:60'],
+        ]);
+
+        $file  = $request->file('font_file');
+        $label = $request->input('font_label') ?: pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+        $oldPath = SettingsHelper::get("font_{$slot}_custom_path");
+        if ($oldPath) {
+            Storage::disk('public')->delete($oldPath);
+        }
+
+        $path = $file->store("fonts/{$slot}", 'public');
+
+        SettingsHelper::set("font_{$slot}_custom_path", $path, 'appearance');
+        SettingsHelper::set("font_{$slot}_custom_label", $label, 'appearance');
+        SettingsHelper::set('font_' . $slot, $slot === 'heading' ? FontHelper::CUSTOM_HEADING_KEY : FontHelper::CUSTOM_BODY_KEY, 'appearance');
+
+        Cache::flush();
+        return back()->with('success', 'Tipografía personalizada subida y activada.');
+    }
+
+    public function removeCustomFont(string $slot): RedirectResponse
+    {
+        abort_unless(in_array($slot, ['heading', 'body'], true), 404);
+
+        $path = SettingsHelper::get("font_{$slot}_custom_path");
+        if ($path) {
+            Storage::disk('public')->delete($path);
+        }
+
+        SettingsHelper::set("font_{$slot}_custom_path", '', 'appearance');
+        SettingsHelper::set("font_{$slot}_custom_label", '', 'appearance');
+
+        $customKey = $slot === 'heading' ? FontHelper::CUSTOM_HEADING_KEY : FontHelper::CUSTOM_BODY_KEY;
+        if (SettingsHelper::get('font_' . $slot) === $customKey) {
+            SettingsHelper::set('font_' . $slot, $slot === 'heading' ? 'playfair' : 'inter', 'appearance');
+        }
+
+        Cache::flush();
+        return back()->with('success', 'Tipografía personalizada eliminada.');
     }
 }

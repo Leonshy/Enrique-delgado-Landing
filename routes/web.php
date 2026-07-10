@@ -112,6 +112,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/colores',               [Admin\SettingsController::class, 'colors'])->name('settings.colors');
         Route::post('/colores',              [Admin\SettingsController::class, 'updateColors'])->name('settings.colors.update');
         Route::post('/colores/reset',        [Admin\SettingsController::class, 'resetColors'])->name('settings.colors.reset');
+        Route::get('/tipografia',            [Admin\SettingsController::class, 'typography'])->name('settings.typography');
+        Route::post('/tipografia',           [Admin\SettingsController::class, 'updateTypography'])->name('settings.typography.update');
+        Route::post('/tipografia/reset',     [Admin\SettingsController::class, 'resetTypography'])->name('settings.typography.reset');
+        Route::post('/tipografia/custom/{slot}',   [Admin\SettingsController::class, 'uploadCustomFont'])
+            ->whereIn('slot', ['heading', 'body'])->name('settings.typography.custom.upload');
+        Route::delete('/tipografia/custom/{slot}', [Admin\SettingsController::class, 'removeCustomFont'])
+            ->whereIn('slot', ['heading', 'body'])->name('settings.typography.custom.remove');
 
         // Media
         Route::get('/media',                [Admin\MediaController::class, 'index'])->name('media.index');

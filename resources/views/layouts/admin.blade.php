@@ -131,6 +131,11 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2a10 10 0 100 20 2 2 0 001.8-2.9 1.7 1.7 0 01.4-2 1.7 1.7 0 011.2-.5H17a3 3 0 003-3 8 8 0 00-8-9z"/></svg>
                 Colores
             </a>
+            <a href="{{ route('admin.settings.typography') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.settings.typography') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                Tipografía
+            </a>
             <a href="{{ route('admin.seo.index') }}"
                class="admin-sidebar-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -196,7 +201,7 @@
             branding: false,
             plugins: 'lists link autolink',
             toolbar: 'bold italic underline | bullist numlist | link | removeformat | undo redo',
-            content_style: "body { font-family: Inter, system-ui, sans-serif; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; }",
+            content_style: "body { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-sans'] }}; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; }",
         }, options));
     };
 </script>
