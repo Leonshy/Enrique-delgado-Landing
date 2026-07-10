@@ -12,13 +12,13 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary:   { DEFAULT: '#2C7A78', light: '#3AAFA9', dark: '#1d5452' },
-                secondary: { DEFAULT: '#3AAFA9' },
-                accent:    { DEFAULT: '#A7D8D8' },
+                primary:   { DEFAULT: '#C86432', light: '#D68B65', dark: '#A0563D' },
+                secondary: { DEFAULT: '#D68B65' },
+                accent:    { DEFAULT: '#F5DEB3' },
                 brand: {
-                    dark:  '#102A2A',
-                    light: '#F7FAFA',
-                    muted: '#EAF4F4',
+                    dark:  '#3A2115',
+                    light: '#FDF8F2',
+                    muted: '#FAEFDA',
                 },
             },
             fontFamily: {

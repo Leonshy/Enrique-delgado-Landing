@@ -3,18 +3,16 @@
 
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Enrique Delgado - El Psicólogo del Cambio">
-            <img id="logo-white" src="{{ asset('images/logo-white-h.png') }}"
-                 alt="Enrique Delgado" style="height:84px;width:auto;">
-            <img id="logo-color" src="{{ asset('images/logo.png') }}"
-                 alt="Enrique Delgado" style="height:56px;width:auto;display:none;">
+            <img src="{{ asset('images/logo.png') }}"
+                 alt="Enrique Delgado" style="height:56px;width:auto;">
         </a>
 
         {{-- Desktop links --}}
         <ul class="nav-links">
+            <li><a href="#proceso">Proceso</a></li>
             <li><a href="#enfoque">Enfoque</a></li>
             <li><a href="#areas">Áreas</a></li>
             <li><a href="#sobre-mi">Sobre mí</a></li>
-            <li><a href="#proceso">Proceso</a></li>
             <li><a href="#planes">Planes</a></li>
             <li><a href="#faq">FAQ</a></li>
         </ul>
@@ -24,7 +22,7 @@
                 Agendar sesión
             </a>
             {{-- Hamburger --}}
-            <button id="nav-hamburger" aria-label="Abrir menú" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;flex-direction:column;gap:5px;">
+            <button id="nav-hamburger" aria-label="Abrir menú">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -32,10 +30,10 @@
 
     {{-- Mobile menu --}}
     <div id="nav-mobile" class="nav-mobile">
+        <a href="#proceso">Proceso</a>
         <a href="#enfoque">Enfoque</a>
         <a href="#areas">Áreas de ayuda</a>
         <a href="#sobre-mi">Sobre mí</a>
-        <a href="#proceso">Proceso</a>
         <a href="#planes">Planes</a>
         <a href="#faq">Preguntas frecuentes</a>
         <a href="#contacto" style="color:var(--color-primary);font-weight:600;border-bottom:none;margin-top:0.5rem;">→ Agendar sesión</a>

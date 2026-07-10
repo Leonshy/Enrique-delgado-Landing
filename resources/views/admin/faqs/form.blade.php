@@ -22,7 +22,7 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-2" style="color: var(--color-brand-dark);">Respuesta <span class="text-red-500">*</span></label>
-            <textarea name="answer" rows="5" required class="input-field">{{ old('answer', $faq->answer) }}</textarea>
+            <textarea id="faq-answer-editor" name="answer" rows="5" class="input-field">{{ old('answer', $faq->answer) }}</textarea>
         </div>
         <div class="grid md:grid-cols-2 gap-4">
             <div>
@@ -43,4 +43,8 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#faq-answer-editor', { height: 220, toolbar: 'bold italic | bullist numlist | link | removeformat | undo redo' }));</script>
+@endpush
 @endsection

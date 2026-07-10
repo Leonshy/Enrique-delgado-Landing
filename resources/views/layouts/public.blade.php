@@ -10,6 +10,7 @@
     <link rel="icon" href="{{ \App\Helpers\SettingsHelper::get('favicon') ? asset('storage/'.\App\Helpers\SettingsHelper::get('favicon')) : asset('favicon.ico') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.theme-vars')
 
     {{-- Google Analytics --}}
     @if($integrations['ga_enabled'] && $integrations['ga_id'])

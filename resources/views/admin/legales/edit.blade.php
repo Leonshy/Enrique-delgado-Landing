@@ -18,9 +18,8 @@
             <input type="text" name="title" value="{{ old('title', $page->title) }}" required class="input-field">
         </div>
         <div>
-            <label class="block text-sm font-medium mb-2" style="color: var(--color-brand-dark);">Contenido <span class="text-xs text-gray-400">(HTML permitido)</span></label>
-            <textarea name="content" rows="20" class="input-field font-mono text-sm">{{ old('content', $page->content) }}</textarea>
-            <p class="text-xs text-gray-400 mt-1">Puedes usar HTML básico (h2, p, a, ul, li).</p>
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-brand-dark);">Contenido</label>
+            <textarea id="legal-content-editor" name="content" rows="20" class="input-field">{{ old('content', $page->content) }}</textarea>
         </div>
         <div class="flex gap-6">
             <label class="flex items-center gap-2 cursor-pointer">
@@ -40,4 +39,14 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => initRichEditor('#legal-content-editor', {
+    height: 500,
+    plugins: 'lists link autolink',
+    toolbar: 'blocks | bold italic underline | bullist numlist | link | removeformat | undo redo',
+}));
+</script>
+@endpush
 @endsection

@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <style>
-    body { font-family: Arial, sans-serif; background: #F7FAFA; margin: 0; padding: 20px; }
+    body { font-family: Arial, sans-serif; background: #FDF8F2; margin: 0; padding: 20px; }
     .container { max-width: 560px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    .header { background: linear-gradient(135deg, #2C7A78, #3AAFA9); color: white; padding: 32px; text-align: center; }
+    .header { background: linear-gradient(135deg, #C86432, #D68B65); color: white; padding: 32px; text-align: center; }
     .header h1 { margin: 0; font-size: 20px; font-weight: 600; }
     .header p { margin: 8px 0 0; opacity: 0.85; font-size: 14px; }
     .body { padding: 32px; }
     .field { margin-bottom: 20px; }
-    .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #2C7A78; margin-bottom: 4px; }
-    .value { font-size: 15px; color: #102A2A; line-height: 1.6; }
-    .message-box { background: #EAF4F4; border-radius: 8px; padding: 16px; }
-    .footer { border-top: 1px solid #EAF4F4; padding: 20px 32px; text-align: center; font-size: 12px; color: #888; }
-    .badge { display: inline-block; background: #EAF4F4; color: #2C7A78; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #C86432; margin-bottom: 4px; }
+    .value { font-size: 15px; color: #3A2115; line-height: 1.6; }
+    .message-box { background: #FAEFDA; border-radius: 8px; padding: 16px; }
+    .footer { border-top: 1px solid #FAEFDA; padding: 20px 32px; text-align: center; font-size: 12px; color: #888; }
+    .badge { display: inline-block; background: #FAEFDA; color: #C86432; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -30,12 +30,12 @@
         </div>
         <div class="field">
             <div class="label">Email</div>
-            <div class="value"><a href="mailto:{{ $contactMessage->email }}" style="color: #2C7A78;">{{ $contactMessage->email }}</a></div>
+            <div class="value"><a href="mailto:{{ $contactMessage->email }}" style="color: #C86432;">{{ $contactMessage->email }}</a></div>
         </div>
         <div class="field">
             <div class="label">Teléfono</div>
             <div class="value">
-                <a href="tel:{{ $contactMessage->phone }}" style="color: #2C7A78;">{{ $contactMessage->phone }}</a>
+                <a href="tel:{{ $contactMessage->phone }}" style="color: #C86432;">{{ $contactMessage->phone }}</a>
             </div>
         </div>
         <div class="field">
@@ -45,7 +45,7 @@
     </div>
     <div class="footer">
         <p>Este mensaje fue enviado desde el formulario de contacto de <strong>enriquedelgado.com</strong></p>
-        <p><a href="{{ route('admin.messages.show', $contactMessage) }}" style="color: #2C7A78;">Ver en el panel administrativo</a></p>
+        <p><a href="{{ route('admin.messages.show', $contactMessage) }}" style="color: #C86432;">Ver en el panel administrativo</a></p>
     </div>
 </div>
 </body>

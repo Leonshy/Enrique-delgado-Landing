@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Panel Admin') — Enrique Delgado</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.theme-vars')
 </head>
 <body style="background-color: var(--color-brand-light);" class="min-h-screen">
 
@@ -34,40 +35,11 @@
                 Dashboard
             </a>
 
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 pt-4 pb-1">Contenido</p>
-
-            <a href="{{ route('admin.landing.index') }}"
-               class="admin-sidebar-link {{ request()->routeIs('admin.landing.*') ? 'active' : '' }}">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                Secciones
-            </a>
-            <a href="{{ route('admin.areas.index') }}"
-               class="admin-sidebar-link {{ request()->routeIs('admin.areas.*') ? 'active' : '' }}">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                Áreas de ayuda
-            </a>
-            <a href="{{ route('admin.proceso.index') }}"
-               class="admin-sidebar-link {{ request()->routeIs('admin.proceso.*') ? 'active' : '' }}">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                Proceso
-            </a>
-            <a href="{{ route('admin.faqs.index') }}"
-               class="admin-sidebar-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                FAQs
-            </a>
-            <a href="{{ route('admin.planes.index') }}"
-               class="admin-sidebar-link {{ request()->routeIs('admin.planes.*') ? 'active' : '' }}">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
-                Planes
-            </a>
             <a href="{{ route('admin.media.index') }}"
                class="admin-sidebar-link {{ request()->routeIs('admin.media.*') ? 'active' : '' }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 Multimedia
             </a>
-
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 pt-4 pb-1">Consultas</p>
 
             <a href="{{ route('admin.messages.index') }}"
                class="admin-sidebar-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
@@ -77,6 +49,69 @@
                 @if($unread > 0)
                 <span class="ml-auto text-xs font-bold px-2 py-0.5 rounded-full text-white" style="background-color: var(--color-primary);">{{ $unread }}</span>
                 @endif
+            </a>
+
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 pt-4 pb-1">Contenido</p>
+
+            <a href="{{ route('admin.portada.edit') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.portada.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                Portada
+            </a>
+            <a href="{{ route('admin.proceso.index') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.proceso.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Proceso
+            </a>
+            <a href="{{ route('admin.video.edit') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.video.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+                Video
+            </a>
+            <a href="{{ route('admin.enfoque.edit') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.enfoque.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                Mi enfoque
+            </a>
+            <a href="{{ route('admin.areas.index') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.areas.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                Áreas de ayuda
+            </a>
+            <a href="{{ route('admin.sobre-mi.edit') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.sobre-mi.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Sobre mí
+            </a>
+            <a href="{{ route('admin.testimonios.index') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.testimonios.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Testimonios
+            </a>
+            <a href="{{ route('admin.planes.index') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.planes.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+                Planes
+            </a>
+            <a href="{{ route('admin.faqs.index') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Preguntas frecuentes
+            </a>
+            <a href="{{ route('admin.cta-banner.edit') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.cta-banner.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                CTA
+            </a>
+            <a href="{{ route('admin.contacto.edit') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.contacto.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Contacto
+            </a>
+            <a href="{{ route('admin.legales.index') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.legales.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Legales
             </a>
 
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 pt-4 pb-1">Configuración</p>
@@ -91,15 +126,15 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                 Integraciones
             </a>
+            <a href="{{ route('admin.settings.colors') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.settings.colors') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2a10 10 0 100 20 2 2 0 001.8-2.9 1.7 1.7 0 01.4-2 1.7 1.7 0 011.2-.5H17a3 3 0 003-3 8 8 0 00-8-9z"/></svg>
+                Colores
+            </a>
             <a href="{{ route('admin.seo.index') }}"
                class="admin-sidebar-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 SEO
-            </a>
-            <a href="{{ route('admin.legales.index') }}"
-               class="admin-sidebar-link {{ request()->routeIs('admin.legales.*') ? 'active' : '' }}">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Legales
             </a>
         </nav>
 
@@ -148,6 +183,24 @@
         </div>
     </main>
 </div>
+
+@php $tinymceApiKey = \App\Helpers\SettingsHelper::get('tinymce_api_key', '') ?: 'no-api-key'; @endphp
+<script src="https://cdn.tiny.cloud/1/{{ $tinymceApiKey }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    window.initRichEditor = function (selector, options = {}) {
+        if (!window.tinymce) return;
+        tinymce.init(Object.assign({
+            selector,
+            height: 300,
+            menubar: false,
+            branding: false,
+            plugins: 'lists link autolink',
+            toolbar: 'bold italic underline | bullist numlist | link | removeformat | undo redo',
+            content_style: "body { font-family: Inter, system-ui, sans-serif; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; }",
+        }, options));
+    };
+</script>
+@stack('scripts')
 
 </body>
 </html>

@@ -4,18 +4,13 @@ window.Alpine = Alpine;
 
 /* ── Navbar: transparent → scrolled ── */
 function initNavbar() {
-    const nav      = document.getElementById('navbar');
-    const logoColor = document.getElementById('logo-color');
-    const logoWhite = document.getElementById('logo-white');
+    const nav = document.getElementById('navbar');
     if (!nav) return;
 
     function update() {
         const scrolled = window.scrollY > 80;
         nav.classList.toggle('scrolled', scrolled);
         nav.classList.toggle('transparent', !scrolled);
-        if (logoColor) logoColor.style.display = scrolled ? 'block' : 'none';
-        if (logoWhite) logoWhite.style.display = scrolled ? 'none' : 'block';
-        // El estilo del botón se maneja en CSS con #navbar.scrolled .nav-cta-btn
     }
     update();
     window.addEventListener('scroll', update, { passive: true });
@@ -140,6 +135,62 @@ function initSmoothScroll() {
         });
     });
 }
+
+/* ── Media Picker (Alpine component — usado en admin) ── */
+window.mediaPicker = function(initPath, initUrl, listUrl, uploadUrl, csrfToken) {
+    return {
+        open: false,
+        loading: false,
+        uploading: false,
+        uploadError: '',
+        assets: [],
+        selectedPath: initPath,
+        selectedUrl:  initUrl,
+
+        openPicker() {
+            this.open = true;
+            this.loadAssets();
+        },
+        async loadAssets() {
+            this.loading = true;
+            try {
+                const res  = await fetch(listUrl);
+                this.assets = await res.json();
+            } finally {
+                this.loading = false;
+            }
+        },
+        select(asset) {
+            this.selectedPath = asset.path;
+            this.selectedUrl  = asset.url;
+        },
+        confirm() {
+            this.open = false;
+        },
+        async uploadFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            this.uploading   = true;
+            this.uploadError = '';
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('collection', 'general');
+            fd.append('_token', csrfToken);
+            try {
+                const res = await fetch(uploadUrl, { method: 'POST', body: fd });
+                if (!res.ok) throw new Error();
+                const asset = await res.json();
+                this.assets.unshift(asset);
+                this.select(asset);
+            } catch {
+                this.uploadError = 'No se pudo subir la imagen. Revisá formato y tamaño (máx 5 MB).';
+            } finally {
+                this.uploading     = false;
+                event.target.value = '';
+            }
+        },
+    };
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();

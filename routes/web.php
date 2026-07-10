@@ -7,16 +7,18 @@ use Illuminate\Support\Facades\Route;
 /* ─────────────────────────────────────────────
    FRONTEND — Landing One Page
 ───────────────────────────────────────────── */
-Route::get('/', [LandingController::class, 'index'])->name('home');
-Route::post('/contacto', [LandingController::class, 'contact'])->name('contact.send');
+Route::middleware('maintenance.mode')->group(function () {
+    Route::get('/', [LandingController::class, 'index'])->name('home');
+    Route::post('/contacto', [LandingController::class, 'contact'])->name('contact.send');
 
-// Legal pages
-Route::get('/politica-de-privacidad',           [LandingController::class, 'legalPage'])->defaults('slug', 'politica-de-privacidad')->name('legal.privacidad');
-Route::get('/consentimiento-tratamiento-datos',  [LandingController::class, 'legalPage'])->defaults('slug', 'consentimiento-tratamiento-datos')->name('legal.consentimiento');
-Route::get('/confidencialidad-profesional',      [LandingController::class, 'legalPage'])->defaults('slug', 'confidencialidad-profesional')->name('legal.confidencialidad');
-Route::get('/aviso-legal',                       [LandingController::class, 'legalPage'])->defaults('slug', 'aviso-legal')->name('legal.aviso');
+    // Legal pages
+    Route::get('/politica-de-privacidad',           [LandingController::class, 'legalPage'])->defaults('slug', 'politica-de-privacidad')->name('legal.privacidad');
+    Route::get('/consentimiento-tratamiento-datos',  [LandingController::class, 'legalPage'])->defaults('slug', 'consentimiento-tratamiento-datos')->name('legal.consentimiento');
+    Route::get('/confidencialidad-profesional',      [LandingController::class, 'legalPage'])->defaults('slug', 'confidencialidad-profesional')->name('legal.confidencialidad');
+    Route::get('/aviso-legal',                       [LandingController::class, 'legalPage'])->defaults('slug', 'aviso-legal')->name('legal.aviso');
+});
 
-// SEO
+// SEO — accessible even in maintenance mode
 Route::get('/sitemap.xml', [LandingController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt',  [LandingController::class, 'robots'])->name('robots');
 
@@ -35,6 +37,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
 
+        // Portada (Hero)
+        Route::get('/portada',  [Admin\PortadaController::class, 'edit'])->name('portada.edit');
+        Route::put('/portada',  [Admin\PortadaController::class, 'update'])->name('portada.update');
+
+        // Enfoque
+        Route::get('/enfoque',  [Admin\EnfoqueController::class, 'edit'])->name('enfoque.edit');
+        Route::put('/enfoque',  [Admin\EnfoqueController::class, 'update'])->name('enfoque.update');
+
+        // Sobre mí
+        Route::get('/sobre-mi', [Admin\SobreMiController::class, 'edit'])->name('sobre-mi.edit');
+        Route::put('/sobre-mi', [Admin\SobreMiController::class, 'update'])->name('sobre-mi.update');
+
         // Landing sections
         Route::get('/landing',                        [Admin\LandingController::class, 'index'])->name('landing.index');
         Route::get('/landing/{section}/edit',         [Admin\LandingController::class, 'edit'])->name('landing.edit');
@@ -49,16 +63,36 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/consultas/exportar/csv',                 [Admin\MessagesController::class, 'export'])->name('messages.export');
 
         // FAQs
+        Route::put('/faqs/seccion', [Admin\FaqController::class, 'updateSection'])->name('faqs.section.update');
         Route::resource('faqs', Admin\FaqController::class)->except(['show']);
 
         // Service Areas
+        Route::put('/areas/seccion', [Admin\ServiceAreaController::class, 'updateSection'])->name('areas.section.update');
         Route::resource('areas', Admin\ServiceAreaController::class)->except(['show']);
 
         // Process Steps
+        Route::put('/proceso/seccion', [Admin\ProcessStepController::class, 'updateSection'])->name('proceso.section.update');
         Route::resource('proceso', Admin\ProcessStepController::class)->except(['show'])->parameters(['proceso' => 'step']);
 
+        // Video
+        Route::get('/video', [Admin\VideoController::class, 'edit'])->name('video.edit');
+        Route::put('/video', [Admin\VideoController::class, 'update'])->name('video.update');
+
         // Session Plans
+        Route::put('/planes/seccion', [Admin\SessionPlanController::class, 'updateSection'])->name('planes.section.update');
         Route::resource('planes', Admin\SessionPlanController::class)->except(['show'])->parameters(['planes' => 'plan']);
+
+        // Testimonials
+        Route::put('/testimonios/seccion', [Admin\TestimonialController::class, 'updateSection'])->name('testimonios.section.update');
+        Route::resource('testimonios', Admin\TestimonialController::class)->except(['show'])->parameters(['testimonios' => 'testimonio']);
+
+        // CTA Banner
+        Route::get('/cta-banner',  [Admin\CtaBannerController::class, 'edit'])->name('cta-banner.edit');
+        Route::put('/cta-banner',  [Admin\CtaBannerController::class, 'update'])->name('cta-banner.update');
+
+        // Contacto
+        Route::get('/contacto',  [Admin\ContactoController::class, 'edit'])->name('contacto.edit');
+        Route::put('/contacto',  [Admin\ContactoController::class, 'update'])->name('contacto.update');
 
         // SEO
         Route::get('/seo',             [Admin\SeoController::class, 'index'])->name('seo.index');
@@ -75,10 +109,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/configuracion',        [Admin\SettingsController::class, 'updateGeneral'])->name('settings.general.update');
         Route::get('/integraciones',         [Admin\SettingsController::class, 'integrations'])->name('settings.integrations');
         Route::post('/integraciones',        [Admin\SettingsController::class, 'updateIntegrations'])->name('settings.integrations.update');
+        Route::get('/colores',               [Admin\SettingsController::class, 'colors'])->name('settings.colors');
+        Route::post('/colores',              [Admin\SettingsController::class, 'updateColors'])->name('settings.colors.update');
+        Route::post('/colores/reset',        [Admin\SettingsController::class, 'resetColors'])->name('settings.colors.reset');
 
         // Media
         Route::get('/media',                [Admin\MediaController::class, 'index'])->name('media.index');
         Route::post('/media',               [Admin\MediaController::class, 'store'])->name('media.store');
+        Route::get('/media/list',           [Admin\MediaController::class, 'listJson'])->name('media.list');
+        Route::post('/media/upload',        [Admin\MediaController::class, 'uploadJson'])->name('media.upload');
         Route::delete('/media/{asset}',     [Admin\MediaController::class, 'destroy'])->name('media.destroy');
     });
 });

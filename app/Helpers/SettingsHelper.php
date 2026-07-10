@@ -12,9 +12,9 @@ class SettingsHelper
         return Cache::remember("setting_{$key}", 3600, fn () => SiteSetting::get($key, $default));
     }
 
-    public static function set(string $key, mixed $value): void
+    public static function set(string $key, mixed $value, ?string $group = null): void
     {
-        SiteSetting::set($key, $value);
+        SiteSetting::set($key, $value, $group);
         Cache::forget("setting_{$key}");
     }
 

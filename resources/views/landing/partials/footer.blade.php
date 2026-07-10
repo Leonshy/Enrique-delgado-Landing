@@ -26,10 +26,10 @@
                 <h4>Navegación</h4>
                 <ul class="footer-links">
                     <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#proceso">El proceso</a></li>
                     <li><a href="#enfoque">Enfoque</a></li>
                     <li><a href="#areas">Áreas de ayuda</a></li>
                     <li><a href="#sobre-mi">Sobre mí</a></li>
-                    <li><a href="#proceso">El proceso</a></li>
                     <li><a href="#planes">Planes</a></li>
                     <li><a href="#faq">Preguntas frecuentes</a></li>
                 </ul>
@@ -70,7 +70,7 @@
         {{-- Bottom --}}
         <div class="footer-bottom">
             <p class="footer-copyright">
-                © {{ date('Y') }} Enrique Delgado. Todos los derechos reservados.
+                {{ $settings['footer_text'] ?: '© '.date('Y').' Enrique Delgado. Todos los derechos reservados.' }}
             </p>
             <div class="footer-legal">
                 @foreach($legals as $legal)

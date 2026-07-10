@@ -16,9 +16,13 @@ class SiteSetting extends Model
     }
 
     /** Set or create a setting */
-    public static function set(string $key, mixed $value): void
+    public static function set(string $key, mixed $value, ?string $group = null): void
     {
-        static::updateOrCreate(['key' => $key], ['value' => $value]);
+        $attributes = ['value' => $value];
+        if ($group !== null) {
+            $attributes['group'] = $group;
+        }
+        static::updateOrCreate(['key' => $key], $attributes);
     }
 
     /** Return all settings of a group as key=>value array */

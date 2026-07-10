@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\LandingSection;
 use App\Models\ProcessStep;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +13,11 @@ class ProcessStepController extends Controller
 {
     public function index(): View
     {
-        return view('admin.proceso.index', ['steps' => ProcessStep::orderBy('order')->get()]);
+        $section = LandingSection::where('slug', 'proceso')->first();
+        return view('admin.proceso.index', [
+            'steps'   => ProcessStep::orderBy('order')->get(),
+            'section' => $section,
+        ]);
     }
 
     public function create(): View
@@ -47,12 +52,35 @@ class ProcessStepController extends Controller
         return redirect()->route('admin.proceso.index')->with('success', 'Paso eliminado.');
     }
 
+    public function updateSection(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'label'    => ['nullable', 'string', 'max:100'],
+            'title'    => ['nullable', 'string', 'max:255'],
+            'subtitle' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $section = LandingSection::where('slug', 'proceso')->firstOrFail();
+        $extra   = json_decode($section->extra ?? '{}', true) ?: [];
+        $extra['label'] = $request->label;
+
+        $section->update([
+            'title'     => $request->title,
+            'subtitle'  => $request->subtitle,
+            'is_active' => $request->boolean('is_active'),
+            'extra'     => json_encode($extra),
+        ]);
+
+        return redirect()->route('admin.proceso.index')->with('success', 'Encabezado actualizado.');
+    }
+
     private function validated(Request $request): array
     {
         return $request->validate([
             'step_number' => ['required', 'integer'],
             'title'       => ['required', 'string', 'max:150'],
             'description' => ['required', 'string'],
+            'icon'        => ['nullable', 'string', 'max:50'],
             'order'       => ['nullable', 'integer'],
         ]);
     }

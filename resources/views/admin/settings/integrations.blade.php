@@ -68,6 +68,29 @@
             </div>
         </div>
 
+        {{-- TinyMCE (editor de texto enriquecido) --}}
+        <div class="card space-y-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--color-brand-muted);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-primary);"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+                </div>
+                <h2 class="font-semibold" style="color: var(--color-brand-dark);">TinyMCE (editor de texto enriquecido)</h2>
+            </div>
+            <p class="text-sm text-gray-400">
+                Se usa en las descripciones, respuestas de preguntas frecuentes y contenido de las páginas legales.
+                Necesitás una API key gratuita de
+                <a href="https://www.tiny.cloud/auth/signup/" target="_blank" rel="noopener" class="font-medium" style="color: var(--color-primary);">tiny.cloud</a>.
+            </p>
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color: var(--color-brand-dark);">API Key</label>
+                <input type="text" name="tinymce_api_key" value="{{ old('tinymce_api_key', $settings['tinymce_api_key']->value ?? '') }}" class="input-field font-mono text-sm" placeholder="ej: abc123def456...">
+            </div>
+            <div class="p-3 rounded-xl text-sm bg-amber-50 text-amber-700 border border-amber-200">
+                Pasos: 1) creá una cuenta gratuita en tiny.cloud → 2) copiá tu API key desde el dashboard → 3) agregá el dominio de este sitio (y <code>localhost</code> para pruebas) en la sección "Approved Domains" de tu cuenta → 4) pegá la key acá y guardá.
+                Sin key configurada, el editor funciona igual pero muestra un aviso de "modo de evaluación".
+            </div>
+        </div>
+
         {{-- Scripts personalizados --}}
         <div class="card space-y-4">
             <h2 class="font-semibold" style="color: var(--color-brand-dark);">Scripts personalizados</h2>

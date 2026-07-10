@@ -13,7 +13,7 @@ use App\Models\LegalPage;
 use App\Models\ProcessStep;
 use App\Models\ServiceArea;
 use App\Models\SessionPlan;
-use App\Models\SocialLink;
+use App\Models\Testimonial;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
@@ -27,9 +27,10 @@ class LandingController extends Controller
             'seo'      => SeoHelper::for('home'),
             'sections' => LandingSection::orderBy('order')->get()->keyBy('slug'),
             'areas'    => ServiceArea::active()->get(),
-            'steps'    => ProcessStep::active()->get(),
-            'faqs'     => Faq::active()->get(),
-            'plans'    => SessionPlan::active()->get(),
+            'steps'        => ProcessStep::active()->get(),
+            'faqs'         => Faq::active()->get(),
+            'plans'        => SessionPlan::active()->get(),
+            'testimonials' => Testimonial::active()->get(),
         ]));
     }
 
@@ -71,6 +72,7 @@ class LandingController extends Controller
                 'whatsappUrl' => SettingsHelper::whatsappUrl(),
                 'location'    => SettingsHelper::get('location'),
                 'schedule'    => SettingsHelper::get('schedule'),
+                'footer_text' => SettingsHelper::get('footer_text', ''),
             ],
             'integrations' => [
                 'hcaptcha_enabled'  => SettingsHelper::get('hcaptcha_enabled', '0') === '1',
@@ -82,7 +84,18 @@ class LandingController extends Controller
                 'head_scripts'      => SettingsHelper::get('custom_head_scripts', ''),
                 'body_scripts'      => SettingsHelper::get('custom_body_scripts', ''),
             ],
-            'socials' => SocialLink::active()->get(),
+            'socials' => collect([
+                'facebook'  => SettingsHelper::get('social_facebook'),
+                'x'         => SettingsHelper::get('social_x'),
+                'instagram' => SettingsHelper::get('social_instagram'),
+                'linkedin'  => SettingsHelper::get('social_linkedin'),
+                'youtube'   => SettingsHelper::get('social_youtube'),
+                'tiktok'    => SettingsHelper::get('social_tiktok'),
+            ])->filter()->map(fn ($url, $platform) => (object)[
+                'platform' => $platform,
+                'url'      => $url,
+                'label'    => ucfirst($platform),
+            ])->values(),
             'legals'  => LegalPage::where('show_in_footer', true)->where('is_active', true)->get(),
         ];
     }
