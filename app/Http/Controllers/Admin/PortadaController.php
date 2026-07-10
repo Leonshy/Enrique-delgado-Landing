@@ -15,11 +15,6 @@ class PortadaController extends Controller
         $hero  = LandingSection::where('slug', 'hero')->firstOrFail();
         $extra = json_decode($hero->extra ?? '{}', true) ?: [];
 
-        $extra['stats']    = $extra['stats']    ?? [
-            ['value' => '10+',  'label' => 'Años de experiencia'],
-            ['value' => '500+', 'label' => 'Pacientes acompañados'],
-            ['value' => '3',    'label' => 'Países de formación'],
-        ];
         $extra['cert_badge_enabled']  = $extra['cert_badge_enabled']  ?? true;
         $extra['cert_badge_title']    = $extra['cert_badge_title']    ?? 'Certificado';
         $extra['cert_badge_subtitle'] = $extra['cert_badge_subtitle'] ?? 'Psicólogo Clínico';
@@ -37,8 +32,6 @@ class PortadaController extends Controller
             'cta_url'            => ['nullable', 'string', 'max:255'],
             'btn2_text'          => ['nullable', 'string', 'max:100'],
             'btn2_url'           => ['nullable', 'string', 'max:255'],
-            'stats.*.value'      => ['nullable', 'string', 'max:20'],
-            'stats.*.label'      => ['nullable', 'string', 'max:80'],
             'image_path'         => ['nullable', 'string', 'max:500'],
             'image_alt'          => ['nullable', 'string', 'max:255'],
             'cert_badge_title'    => ['nullable', 'string', 'max:100'],
@@ -57,7 +50,6 @@ class PortadaController extends Controller
             'extra'     => json_encode([
                 'btn2_text'            => $request->btn2_text,
                 'btn2_url'             => $request->btn2_url,
-                'stats'                => $request->input('stats', []),
                 'cert_badge_enabled'   => $request->boolean('cert_badge_enabled'),
                 'cert_badge_title'     => $request->cert_badge_title,
                 'cert_badge_subtitle'  => $request->cert_badge_subtitle,

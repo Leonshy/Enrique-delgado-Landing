@@ -60,25 +60,6 @@
         </div>
     </div>
 
-    {{-- ── ESTADÍSTICAS ── --}}
-    <div class="card space-y-4">
-        <h2 class="font-semibold text-base" style="color:var(--color-brand-dark);">Estadísticas</h2>
-        <p class="text-sm text-gray-400">Los tres números que aparecen debajo de los botones en el hero.</p>
-
-        @foreach($extra['stats'] as $i => $stat)
-        <div class="flex gap-3 items-end p-4 rounded-xl" style="background:var(--color-brand-muted);">
-            <div class="w-24 flex-shrink-0">
-                <label class="block text-xs font-medium mb-1 text-gray-500">Valor</label>
-                <input type="text" name="stats[{{ $i }}][value]" value="{{ old("stats.$i.value", $stat['value']) }}" class="input-field text-center font-bold" placeholder="10+">
-            </div>
-            <div class="flex-1">
-                <label class="block text-xs font-medium mb-1 text-gray-500">Texto descriptivo</label>
-                <input type="text" name="stats[{{ $i }}][label]" value="{{ old("stats.$i.label", $stat['label']) }}" class="input-field" placeholder="Años de experiencia">
-            </div>
-        </div>
-        @endforeach
-    </div>
-
     {{-- ── SELLO DE CERTIFICACIÓN ── --}}
     <div class="card space-y-4">
         <h2 class="font-semibold text-base" style="color:var(--color-brand-dark);">Sello de certificación</h2>

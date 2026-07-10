@@ -434,35 +434,14 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 3.5rem;
-}
-.hero-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
-}
-.hero-stat-item {
-    display: flex;
-    flex-direction: column;
-}
-.hero-stat-num {
-    font-family: var(--font-serif);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-brand-dark);
-    line-height: 1;
-}
-.hero-stat-label {
-    font-size: 0.8125rem;
-    color: color-mix(in srgb, var(--color-brand-dark) 55%, white);
-    margin-top: 0.25rem;
+    margin-bottom: 1rem;
 }
 /* Sello de certificación flotante sobre la foto del hero */
 .hero-cert-badge {
     position: absolute;
-    top: 60%;
-    right: 3.5rem;
-    transform: translateY(-50%);
+    bottom: 6rem;
+    left: 76%;
+    transform: translateX(-50%);
     z-index: 4;
     background: #fff;
     border-radius: 1.25rem;
