@@ -4,7 +4,7 @@
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Enrique Delgado - El Psicólogo del Cambio">
             <img src="{{ asset('images/logo.png') }}"
-                 alt="Enrique Delgado" style="height:56px;width:auto;">
+                 alt="Enrique Delgado">
         </a>
 
         {{-- Desktop links --}}

@@ -227,7 +227,7 @@
     align-items: center;
     justify-content: space-between;
 }
-.nav-logo img { height: 84px; width: auto; }
+.nav-logo img { height: 80px; width: auto; }
 .nav-links {
     display: none;
     align-items: center;
