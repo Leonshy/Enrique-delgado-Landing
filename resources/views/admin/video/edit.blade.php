@@ -3,6 +3,7 @@
 @section('page-title', 'Sección Video')
 
 @section('content')
+@include('admin.partials.section-url', ['anchor' => 'video'])
 <form method="POST" action="{{ route('admin.video.update') }}" class="space-y-6 max-w-3xl">
     @csrf @method('PUT')
 

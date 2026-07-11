@@ -3,6 +3,7 @@
 @section('page-title', 'Testimonios')
 
 @section('content')
+@include('admin.partials.section-url', ['anchor' => 'cambio'])
 
 @if(session('success'))
 <div class="p-4 rounded-xl text-sm font-medium mb-4" style="background:#d1fae5;color:#065f46;">

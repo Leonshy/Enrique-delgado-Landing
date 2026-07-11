@@ -204,6 +204,24 @@
             content_style: "body { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-sans'] }}; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; }",
         }, options));
     };
+
+    window.copySectionUrl = function (anchor, btn) {
+        const input = document.getElementById('section-url-' + anchor);
+        if (!input) return;
+        const restore = btn.textContent;
+        const done = () => { btn.textContent = 'Copiado ✓'; setTimeout(() => { btn.textContent = restore; }, 1500); };
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(input.value).then(done).catch(() => {
+                input.select();
+                document.execCommand('copy');
+                done();
+            });
+        } else {
+            input.select();
+            document.execCommand('copy');
+            done();
+        }
+    };
 </script>
 @stack('scripts')
 

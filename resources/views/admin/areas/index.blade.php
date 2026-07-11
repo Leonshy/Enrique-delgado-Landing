@@ -3,6 +3,7 @@
 @section('page-title', 'Áreas de ayuda')
 
 @section('content')
+@include('admin.partials.section-url', ['anchor' => 'areas'])
 
 {{-- ── Encabezado de sección ── --}}
 @php

@@ -423,7 +423,7 @@ $defaultTestimonials = [
 $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultTestimonials)->map(fn($t) => (object)$t);
 @endphp
 @if($sections['cambio']->is_active ?? true)
-<section class="quote-section">
+<section id="cambio" class="quote-section">
 
     <div class="container">
         <div class="quote-content reveal-left">
@@ -645,7 +645,7 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
     $ctaBtn2    = $ctaExtra['btn2_text'] ?? 'Escribir por WhatsApp';
 @endphp
 @if($ctaSection?->is_active ?? true)
-<section class="cta-banner">
+<section id="primer-paso" class="cta-banner">
     <div class="container" style="position:relative;z-index:1;text-align:center;">
         <div class="reveal">
             <span class="section-label light" style="margin-bottom:1.25rem;">{{ $ctaLabel }}</span>

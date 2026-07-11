@@ -3,6 +3,7 @@
 @section('page-title', 'CTA — Llamado a acción')
 
 @section('content')
+@include('admin.partials.section-url', ['anchor' => 'primer-paso'])
 <form method="POST" action="{{ route('admin.cta-banner.update') }}" class="space-y-6 max-w-2xl">
     @csrf @method('PUT')
 

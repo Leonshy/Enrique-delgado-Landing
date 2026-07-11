@@ -3,6 +3,7 @@
 @section('page-title', 'Formulario de Contacto')
 
 @section('content')
+@include('admin.partials.section-url', ['anchor' => 'contacto'])
 <form method="POST" action="{{ route('admin.contacto.update') }}" class="space-y-6 max-w-2xl">
     @csrf @method('PUT')
 

@@ -3,6 +3,7 @@
 @section('page-title', 'Portada — Hero')
 
 @section('content')
+@include('admin.partials.section-url', ['anchor' => 'inicio'])
 <form method="POST" action="{{ route('admin.portada.update') }}" enctype="multipart/form-data" class="space-y-6 max-w-3xl">
     @csrf @method('PUT')
 
