@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HtmlSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\LandingSection;
 use App\Models\SessionPlan;
@@ -80,7 +81,7 @@ class SessionPlanController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'name'           => ['required', 'string', 'max:100'],
             'subtitle'       => ['nullable', 'string', 'max:200'],
             'description'    => ['nullable', 'string'],
@@ -90,5 +91,9 @@ class SessionPlanController extends Controller
             'whatsapp_text'  => ['nullable', 'string', 'max:500'],
             'order'          => ['nullable', 'integer'],
         ]);
+
+        $data['description'] = HtmlSanitizer::clean($data['description'] ?? '');
+
+        return $data;
     }
 }

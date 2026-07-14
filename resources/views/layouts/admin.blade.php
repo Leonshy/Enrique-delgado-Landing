@@ -126,6 +126,11 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
                 Integraciones
             </a>
+            <a href="{{ route('admin.settings.mail') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.settings.mail') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Email
+            </a>
             <a href="{{ route('admin.settings.colors') }}"
                class="admin-sidebar-link {{ request()->routeIs('admin.settings.colors') ? 'active' : '' }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2a10 10 0 100 20 2 2 0 001.8-2.9 1.7 1.7 0 01.4-2 1.7 1.7 0 011.2-.5H17a3 3 0 003-3 8 8 0 00-8-9z"/></svg>
@@ -140,6 +145,11 @@
                class="admin-sidebar-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 SEO
+            </a>
+            <a href="{{ route('admin.usuarios.index') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.usuarios.*') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Usuarios
             </a>
         </nav>
 

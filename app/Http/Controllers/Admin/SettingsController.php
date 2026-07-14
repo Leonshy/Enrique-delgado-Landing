@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\FontHelper;
+use App\Helpers\HcaptchaHelper;
+use App\Helpers\ImageOptimizer;
+use App\Helpers\MailSettingsHelper;
+use App\Helpers\SentryHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\ThemeHelper;
+use App\Helpers\UptimeRobotHelper;
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -44,6 +50,13 @@ class SettingsController extends Controller
         ];
         $imageKeys = ['logo_color', 'logo_white', 'isotipo', 'favicon'];
 
+        $request->validate([
+            'logo_color' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
+            'logo_white' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
+            'isotipo'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
+            'favicon'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
+        ]);
+
         foreach ($textKeys as $key) {
             if ($request->has($key)) {
                 SettingsHelper::set($key, $request->input($key));
@@ -54,9 +67,12 @@ class SettingsController extends Controller
 
         foreach ($imageKeys as $key) {
             if ($request->hasFile($key)) {
-                $file = $request->file($key);
-                $file->validate(['mimes' => 'jpg,jpeg,png,gif,webp,svg', 'max' => 2048]);
-                $path = $file->store("settings/{$key}", 'public');
+                try {
+                    $path = ImageOptimizer::store($request->file($key), "settings/{$key}", 'public');
+                } catch (\RuntimeException $e) {
+                    return back()->with('error', $e->getMessage());
+                }
+
                 SettingsHelper::set($key, $path);
             }
         }
@@ -67,8 +83,15 @@ class SettingsController extends Controller
 
     public function integrations(): View
     {
-        $settings = SiteSetting::where('group', 'integrations')->get()->keyBy('key');
-        return view('admin.settings.integrations', compact('settings'));
+        $settings          = SiteSetting::where('group', 'integrations')->get()->keyBy('key');
+        $hcaptchaForms     = HcaptchaHelper::availableForms();
+        $enabledForms      = HcaptchaHelper::enabledForms();
+        $sentrySettings    = SentryHelper::settings();
+        $uptimeSettings    = UptimeRobotHelper::settings();
+
+        return view('admin.settings.integrations', compact(
+            'settings', 'hcaptchaForms', 'enabledForms', 'sentrySettings', 'uptimeSettings'
+        ));
     }
 
     public function updateIntegrations(Request $request): RedirectResponse
@@ -78,6 +101,8 @@ class SettingsController extends Controller
             'ga_enabled', 'ga_measurement_id',
             'pixel_enabled', 'pixel_id',
             'tinymce_api_key',
+            'sentry_dsn',
+            'uptimerobot_api_key',
             'custom_head_scripts', 'custom_body_scripts',
         ];
 
@@ -88,12 +113,146 @@ class SettingsController extends Controller
         }
 
         // Checkboxes
-        foreach (['hcaptcha_enabled', 'ga_enabled', 'pixel_enabled'] as $key) {
+        foreach (['hcaptcha_enabled', 'ga_enabled', 'pixel_enabled', 'sentry_enabled', 'uptimerobot_enabled'] as $key) {
             SettingsHelper::set($key, $request->boolean($key) ? '1' : '0', 'integrations');
         }
 
+        $selectedForms = array_values(array_intersect(
+            $request->input('hcaptcha_forms', []),
+            array_keys(HcaptchaHelper::availableForms())
+        ));
+        SettingsHelper::set('hcaptcha_forms', json_encode($selectedForms), 'integrations');
+
         Cache::flush();
         return back()->with('success', 'Integraciones actualizadas.');
+    }
+
+    public function testSentry(Request $request): JsonResponse
+    {
+        $request->validate(['dsn' => ['required', 'string']]);
+
+        return response()->json(SentryHelper::sendTestEvent($request->dsn));
+    }
+
+    public function testUptimeRobot(Request $request): JsonResponse
+    {
+        $request->validate(['api_key' => ['required', 'string']]);
+
+        return response()->json(UptimeRobotHelper::verifyApiKey($request->api_key));
+    }
+
+    public function createUptimeRobotMonitor(Request $request): JsonResponse
+    {
+        $request->validate(['api_key' => ['required', 'string']]);
+
+        $result = UptimeRobotHelper::createMonitor(
+            $request->api_key,
+            config('app.url'),
+            config('app.name') . ' — sitio web'
+        );
+
+        if ($result['ok']) {
+            SettingsHelper::set('uptimerobot_monitor_id', $result['monitor_id'], 'integrations');
+            SettingsHelper::set('uptimerobot_api_key', $request->api_key, 'integrations');
+            SettingsHelper::set('uptimerobot_enabled', '1', 'integrations');
+            Cache::flush();
+        }
+
+        return response()->json($result);
+    }
+
+    public function checkUptimeRobotStatus(): JsonResponse
+    {
+        $s = UptimeRobotHelper::settings();
+
+        if (!filled($s['api_key']) || !filled($s['monitor_id'])) {
+            return response()->json(['ok' => false, 'message' => 'Todavía no hay un monitor creado.']);
+        }
+
+        return response()->json(UptimeRobotHelper::getMonitorStatus($s['api_key'], $s['monitor_id']));
+    }
+
+    public function testHcaptcha(Request $request): JsonResponse
+    {
+        $request->validate([
+            'secret_key' => ['required', 'string'],
+            'token'      => ['required', 'string'],
+        ]);
+
+        $result = HcaptchaHelper::verify($request->secret_key, $request->token, $request->ip());
+
+        return response()->json([
+            'ok'      => $result['ok'],
+            'message' => $result['ok']
+                ? '✓ Conexión e integración correctas — el desafío se resolvió y se verificó bien.'
+                : HcaptchaHelper::errorMessages($result['errors']),
+        ]);
+    }
+
+    public function mail(): View
+    {
+        $settings          = MailSettingsHelper::settings();
+        $encryptionOptions = MailSettingsHelper::encryptionOptions();
+        $isConfigured      = MailSettingsHelper::isConfigured();
+
+        return view('admin.settings.mail', compact('settings', 'encryptionOptions', 'isConfigured'));
+    }
+
+    public function updateMail(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'mail_host'         => ['required', 'string', 'max:255'],
+            'mail_port'         => ['required', 'integer', 'min:1', 'max:65535'],
+            'mail_encryption'   => ['required', 'in:' . implode(',', array_keys(MailSettingsHelper::encryptionOptions()))],
+            'mail_username'     => ['required', 'string', 'max:255'],
+            'mail_password'     => ['nullable', 'string', 'max:255'],
+            'mail_from_address' => ['required', 'email', 'max:255'],
+            'mail_from_name'    => ['nullable', 'string', 'max:255'],
+        ]);
+
+        SettingsHelper::set('mail_host', $request->mail_host, 'mail');
+        SettingsHelper::set('mail_port', $request->mail_port, 'mail');
+        SettingsHelper::set('mail_encryption', $request->mail_encryption, 'mail');
+        SettingsHelper::set('mail_username', $request->mail_username, 'mail');
+        // Solo se pisa la contraseña si se escribió una nueva — así no hace falta
+        // volver a tipearla cada vez que se cambia otro campo.
+        if ($request->filled('mail_password')) {
+            SettingsHelper::set('mail_password', $request->mail_password, 'mail');
+        }
+        SettingsHelper::set('mail_from_address', $request->mail_from_address, 'mail');
+        SettingsHelper::set('mail_from_name', $request->mail_from_name, 'mail');
+
+        Cache::flush();
+        return back()->with('success', 'Configuración de email actualizada.');
+    }
+
+    public function testMail(Request $request): JsonResponse
+    {
+        $request->validate([
+            'mail_host'         => ['required', 'string', 'max:255'],
+            'mail_port'         => ['required', 'integer', 'min:1', 'max:65535'],
+            'mail_encryption'   => ['required', 'in:' . implode(',', array_keys(MailSettingsHelper::encryptionOptions()))],
+            'mail_username'     => ['required', 'string', 'max:255'],
+            'mail_password'     => ['nullable', 'string', 'max:255'],
+            'mail_from_address' => ['required', 'email', 'max:255'],
+            'to'                => ['required', 'email', 'max:255'],
+        ]);
+
+        // Si no mandaron una contraseña nueva en el form de prueba, usar la ya guardada.
+        $password = $request->filled('mail_password')
+            ? $request->mail_password
+            : SettingsHelper::get('mail_password', '');
+
+        $result = MailSettingsHelper::sendTestEmail([
+            'host'         => $request->mail_host,
+            'port'         => $request->mail_port,
+            'encryption'   => $request->mail_encryption,
+            'username'     => $request->mail_username,
+            'password'     => $password,
+            'from_address' => $request->mail_from_address,
+        ], $request->to);
+
+        return response()->json($result);
     }
 
     public function colors(): View

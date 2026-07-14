@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Admin — Enrique Delgado</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if($hcaptchaEnabled && $hcaptchaSiteKey)
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    @endif
 </head>
 <body class="min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, var(--color-brand-light), var(--color-brand-muted));">
 
@@ -50,6 +53,14 @@
                     Recordarme
                 </label>
             </div>
+            @if($hcaptchaEnabled && $hcaptchaSiteKey)
+            <div class="mb-6">
+                <div class="h-captcha" data-sitekey="{{ $hcaptchaSiteKey }}"></div>
+                @error('h-captcha-response')
+                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            @endif
             <button type="submit" class="btn-primary w-full justify-center">
                 Iniciar sesión
             </button>

@@ -109,6 +109,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/configuracion',        [Admin\SettingsController::class, 'updateGeneral'])->name('settings.general.update');
         Route::get('/integraciones',         [Admin\SettingsController::class, 'integrations'])->name('settings.integrations');
         Route::post('/integraciones',        [Admin\SettingsController::class, 'updateIntegrations'])->name('settings.integrations.update');
+        Route::post('/integraciones/hcaptcha/test', [Admin\SettingsController::class, 'testHcaptcha'])->name('settings.integrations.hcaptcha.test');
+        Route::post('/integraciones/sentry/test',   [Admin\SettingsController::class, 'testSentry'])->name('settings.integrations.sentry.test');
+        Route::post('/integraciones/uptimerobot/test',          [Admin\SettingsController::class, 'testUptimeRobot'])->name('settings.integrations.uptimerobot.test');
+        Route::post('/integraciones/uptimerobot/create-monitor', [Admin\SettingsController::class, 'createUptimeRobotMonitor'])->name('settings.integrations.uptimerobot.create');
+        Route::get('/integraciones/uptimerobot/status',          [Admin\SettingsController::class, 'checkUptimeRobotStatus'])->name('settings.integrations.uptimerobot.status');
+        Route::get('/email',                 [Admin\SettingsController::class, 'mail'])->name('settings.mail');
+        Route::post('/email',                [Admin\SettingsController::class, 'updateMail'])->name('settings.mail.update');
+        Route::post('/email/test',           [Admin\SettingsController::class, 'testMail'])->name('settings.mail.test');
         Route::get('/colores',               [Admin\SettingsController::class, 'colors'])->name('settings.colors');
         Route::post('/colores',              [Admin\SettingsController::class, 'updateColors'])->name('settings.colors.update');
         Route::post('/colores/reset',        [Admin\SettingsController::class, 'resetColors'])->name('settings.colors.reset');
@@ -119,6 +127,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->whereIn('slot', ['heading', 'body'])->name('settings.typography.custom.upload');
         Route::delete('/tipografia/custom/{slot}', [Admin\SettingsController::class, 'removeCustomFont'])
             ->whereIn('slot', ['heading', 'body'])->name('settings.typography.custom.remove');
+
+        // Usuarios
+        Route::resource('usuarios', Admin\UserController::class)->except(['show'])->parameters(['usuarios' => 'usuario']);
 
         // Media
         Route::get('/media',                [Admin\MediaController::class, 'index'])->name('media.index');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HtmlSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\LandingSection;
 use Illuminate\Http\RedirectResponse;
@@ -44,7 +45,7 @@ class EnfoqueController extends Controller
 
         $data = [
             'title'     => $request->title,
-            'subtitle'  => $request->description,
+            'subtitle'  => HtmlSanitizer::clean($request->description),
             'body'      => null,
             'image_alt' => $request->image_alt,
             'is_active' => $request->boolean('is_active'),

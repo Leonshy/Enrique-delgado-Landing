@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Models\MediaAsset;
 use Illuminate\Http\RedirectResponse;
@@ -27,14 +28,18 @@ class MediaController extends Controller
         ]);
 
         foreach ($request->file('files') as $file) {
-            $path = $file->store('media/' . now()->format('Y/m'), 'public');
+            try {
+                $path = ImageOptimizer::store($file, 'media/' . now()->format('Y/m'), 'public');
+            } catch (\RuntimeException $e) {
+                return back()->with('error', $file->getClientOriginalName() . ': ' . $e->getMessage());
+            }
 
             MediaAsset::create([
                 'name'       => $file->getClientOriginalName(),
                 'path'       => $path,
                 'disk'       => 'public',
-                'mime_type'  => $file->getMimeType(),
-                'size'       => $file->getSize(),
+                'mime_type'  => Storage::disk('public')->mimeType($path),
+                'size'       => Storage::disk('public')->size($path),
                 'alt'        => $request->input('alt', ''),
                 'collection' => $request->input('collection', ''),
             ]);
@@ -67,15 +72,20 @@ class MediaController extends Controller
             'alt'        => ['nullable', 'string', 'max:255'],
         ]);
 
-        $file  = $request->file('file');
-        $path  = $file->store('media/' . now()->format('Y/m'), 'public');
+        $file = $request->file('file');
+
+        try {
+            $path = ImageOptimizer::store($file, 'media/' . now()->format('Y/m'), 'public');
+        } catch (\RuntimeException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
 
         $asset = MediaAsset::create([
             'name'       => $file->getClientOriginalName(),
             'path'       => $path,
             'disk'       => 'public',
-            'mime_type'  => $file->getMimeType(),
-            'size'       => $file->getSize(),
+            'mime_type'  => Storage::disk('public')->mimeType($path),
+            'size'       => Storage::disk('public')->size($path),
             'alt'        => $request->input('alt', ''),
             'collection' => $request->input('collection', 'hero'),
         ]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ImageOptimizer;
 use App\Http\Controllers\Controller;
 use App\Models\LandingSection;
 use Illuminate\Http\RedirectResponse;
@@ -40,7 +41,7 @@ class LandingController extends Controller
             if ($section->image_path) {
                 Storage::disk('public')->delete($section->image_path);
             }
-            $data['image_path'] = $request->file('image')->store("sections/{$section->slug}", 'public');
+            $data['image_path'] = ImageOptimizer::store($request->file('image'), "sections/{$section->slug}", 'public');
         }
 
         $data['is_active'] = $request->boolean('is_active');

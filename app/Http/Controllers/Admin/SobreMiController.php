@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HtmlSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\LandingSection;
 use Illuminate\Http\RedirectResponse;
@@ -43,7 +44,7 @@ class SobreMiController extends Controller
         $data = [
             'title'     => $request->title,
             'subtitle'  => $request->subtitle,
-            'body'      => $request->body,
+            'body'      => HtmlSanitizer::clean($request->body),
             'image_alt' => $request->image_alt,
             'is_active' => $request->boolean('is_active'),
             'extra'     => json_encode([

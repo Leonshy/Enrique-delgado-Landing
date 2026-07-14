@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HtmlSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use App\Models\LandingSection;
@@ -76,10 +77,14 @@ class FaqController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'question' => ['required', 'string'],
             'answer'   => ['required', 'string'],
             'order'    => ['nullable', 'integer'],
         ]);
+
+        $data['answer'] = HtmlSanitizer::clean($data['answer']);
+
+        return $data;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HcaptchaHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\SeoHelper;
 use App\Http\Requests\ContactRequest;
@@ -75,7 +76,7 @@ class LandingController extends Controller
                 'footer_text' => SettingsHelper::get('footer_text', ''),
             ],
             'integrations' => [
-                'hcaptcha_enabled'  => SettingsHelper::get('hcaptcha_enabled', '0') === '1',
+                'hcaptcha_enabled'  => HcaptchaHelper::isEnabledFor('contacto'),
                 'hcaptcha_site_key' => SettingsHelper::get('hcaptcha_site_key', ''),
                 'ga_enabled'        => SettingsHelper::get('ga_enabled', '0') === '1',
                 'ga_id'             => SettingsHelper::get('ga_measurement_id', ''),

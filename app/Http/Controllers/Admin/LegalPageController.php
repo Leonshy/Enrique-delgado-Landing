@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HtmlSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\LegalPage;
 use Illuminate\Http\RedirectResponse;
@@ -29,6 +30,7 @@ class LegalPageController extends Controller
             'is_active'      => ['boolean'],
         ]);
 
+        $data['content']         = HtmlSanitizer::clean($data['content']);
         $data['show_in_footer'] = $request->boolean('show_in_footer');
         $data['is_active']      = $request->boolean('is_active');
         $page->update($data);

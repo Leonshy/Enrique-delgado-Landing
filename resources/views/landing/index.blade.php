@@ -13,7 +13,7 @@
     $heroBadgeSubtitle = $heroExtra['cert_badge_subtitle'] ?? 'Psicólogo Clínico';
 @endphp
 <section id="inicio" class="hero">
-    <img src="{{ $hero?->image_path ? asset('storage/'.$hero->image_path) : asset('images/enrique-hero-nobg.png') }}"
+    <img src="{{ $hero?->image_path ? asset('storage/'.$hero->image_path) : asset('images/enrique-hero-nobg.webp') }}"
          alt="{{ $hero?->image_alt ?? 'Enrique Delgado, El Psicólogo del Cambio' }}"
          class="hero-person">
     <div class="hero-bottom-fade"></div>
@@ -223,7 +223,7 @@
         <div class="enfoque-grid">
 
             <div class="enfoque-img-wrap reveal-left">
-                <img src="{{ $enfoque?->image_path ? asset('storage/'.$enfoque->image_path) : asset('images/enrique-vessel.jpg') }}"
+                <img src="{{ $enfoque?->image_path ? asset('storage/'.$enfoque->image_path) : asset('images/enrique-vessel.webp') }}"
                      alt="{{ $enfoque?->image_alt ?? 'Enrique Delgado — psicólogo del cambio' }}">
                 <div class="enfoque-img-deco"></div>
             </div>
@@ -400,7 +400,7 @@
             <div class="sobre-mi-photo sobre-mi-photo-col reveal-right" style="position:relative;">
                 <div class="sobre-mi-photo-deco"></div>
                 <div class="sobre-mi-photo-frame">
-                    <img src="{{ $sobremi && $sobremi->image_path ? asset('storage/'.$sobremi->image_path) : asset('images/enrique-pro-nobg.png') }}"
+                    <img src="{{ $sobremi && $sobremi->image_path ? asset('storage/'.$sobremi->image_path) : asset('images/enrique-pro-nobg.webp') }}"
                          alt="{{ $sobremi?->image_alt ?? 'Enrique Delgado — Psicólogo Clínico' }}">
                 </div>
             </div>
@@ -700,6 +700,9 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
                 <form action="{{ route('contact.send') }}" method="POST" novalidate>
                     @csrf
                     <div class="contact-form-group">
+                        @error('rate_limit')
+                        <div style="background:#fee2e2;color:#991b1b;padding:0.875rem 1rem;border-radius:0.75rem;font-size:0.875rem;">{{ $message }}</div>
+                        @enderror
                         <div class="contact-form-row">
                             <div>
                                 <label class="form-label" for="name">Nombre completo *</label>

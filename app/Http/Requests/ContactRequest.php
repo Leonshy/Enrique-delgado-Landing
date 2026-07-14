@@ -2,12 +2,16 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\HcaptchaHelper;
 use App\Helpers\SettingsHelper;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\RateLimiter;
 
 class ContactRequest extends FormRequest
 {
+    private const MAX_ATTEMPTS = 3;
+    private const DECAY_SECONDS = 600; // 10 minutos
+
     public function authorize(): bool { return true; }
 
     public function rules(): array
@@ -38,36 +42,38 @@ class ContactRequest extends FormRequest
 
     private function hcaptchaRule(): array
     {
-        $enabled = SettingsHelper::get('hcaptcha_enabled', '0') === '1';
-        return $enabled ? ['required'] : [];
+        return HcaptchaHelper::isEnabledFor('contacto') ? ['required'] : [];
+    }
+
+    private function throttleKey(): string
+    {
+        return 'contact-form:' . $this->ip();
     }
 
     protected function withValidator($validator): void
     {
-        $enabled = SettingsHelper::get('hcaptcha_enabled', '0') === '1';
-        if (!$enabled) return;
-
         $validator->after(function ($validator) {
-            $token      = $this->input('h-captcha-response');
-            $secretKey  = SettingsHelper::get('hcaptcha_secret_key', '');
-
-            if (!$token || !$secretKey) {
-                $validator->errors()->add('h-captcha-response', 'Por favor completa el captcha.');
+            if (RateLimiter::tooManyAttempts($this->throttleKey(), self::MAX_ATTEMPTS)) {
+                $seconds = RateLimiter::availableIn($this->throttleKey());
+                $validator->errors()->add(
+                    'rate_limit',
+                    'Enviaste demasiadas consultas seguidas. Probá de nuevo en ' . ceil($seconds / 60) . ' minuto(s).'
+                );
                 return;
             }
 
-            try {
-                $response = Http::asForm()->post('https://hcaptcha.com/siteverify', [
-                    'secret'   => $secretKey,
-                    'response' => $token,
-                    'remoteip' => $this->ip(),
-                ]);
+            RateLimiter::hit($this->throttleKey(), self::DECAY_SECONDS);
 
-                if (!($response->json('success') ?? false)) {
-                    $validator->errors()->add('h-captcha-response', 'Captcha inválido. Inténtalo nuevamente.');
-                }
-            } catch (\Exception) {
-                $validator->errors()->add('h-captcha-response', 'Error al verificar el captcha. Inténtalo nuevamente.');
+            if (!HcaptchaHelper::isEnabledFor('contacto')) return;
+
+            $result = HcaptchaHelper::verify(
+                SettingsHelper::get('hcaptcha_secret_key', ''),
+                (string) $this->input('h-captcha-response', ''),
+                $this->ip()
+            );
+
+            if (!$result['ok']) {
+                $validator->errors()->add('h-captcha-response', HcaptchaHelper::errorMessages($result['errors']));
             }
         });
     }
