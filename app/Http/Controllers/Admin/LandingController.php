@@ -27,7 +27,7 @@ class LandingController extends Controller
     {
         $data = $request->validate([
             'title'     => ['nullable', 'string', 'max:255'],
-            'subtitle'  => ['nullable', 'string', 'max:255'],
+            'subtitle'  => ['nullable', 'string'],
             'body'      => ['nullable', 'string'],
             'extra'     => ['nullable', 'string'],
             'cta_text'  => ['nullable', 'string', 'max:100'],

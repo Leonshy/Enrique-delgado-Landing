@@ -31,7 +31,7 @@ class CtaBannerController extends Controller
         $request->validate([
             'label'     => ['nullable', 'string', 'max:100'],
             'title'     => ['nullable', 'string', 'max:255'],
-            'subtitle'  => ['nullable', 'string', 'max:500'],
+            'subtitle'  => ['nullable', 'string'],
             'btn1_text' => ['nullable', 'string', 'max:80'],
             'btn1_url'  => ['nullable', 'string', 'max:255', 'regex:/^(https?:\/\/|\/|#)/'],
             'btn1_icon'          => ['nullable', 'string', 'max:30'],

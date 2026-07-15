@@ -28,7 +28,7 @@ class ContactoController extends Controller
         $request->validate([
             'label'     => ['nullable', 'string', 'max:100'],
             'title'     => ['nullable', 'string', 'max:255'],
-            'subtitle'  => ['nullable', 'string', 'max:500'],
+            'subtitle'  => ['nullable', 'string'],
             'box_title' => ['nullable', 'string', 'max:100'],
             'box_body'  => ['nullable', 'string'],
         ]);

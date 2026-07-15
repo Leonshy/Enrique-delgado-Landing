@@ -58,7 +58,7 @@ class FaqController extends Controller
         $request->validate([
             'label'    => ['nullable', 'string', 'max:100'],
             'title'    => ['nullable', 'string', 'max:255'],
-            'subtitle' => ['nullable', 'string', 'max:500'],
+            'subtitle' => ['nullable', 'string'],
         ]);
 
         $section = LandingSection::where('slug', 'faq')->firstOrFail();
