@@ -41,18 +41,6 @@
          class="hero-person">
     <div class="hero-bottom-fade"></div>
 
-    @if($heroBadgeEnabled)
-    <div class="hero-cert-badge">
-        <div class="hero-cert-badge-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
-        </div>
-        <div>
-            <strong>{{ $heroBadgeTitle }}</strong>
-            <span>{{ $heroBadgeSubtitle }}</span>
-        </div>
-    </div>
-    @endif
-
     <div class="hero-content">
         <div class="hero-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -71,6 +59,20 @@
             <x-cta-button :btn="$heroBtn1" class="btn-primary" />
             <x-cta-button :btn="$heroBtn2" class="btn-outline" />
         </div>
+
+        @if($heroBadgeEnabled)
+        <div class="hero-cert-badge-wrap">
+            <div class="hero-cert-badge">
+                <div class="hero-cert-badge-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+                </div>
+                <div>
+                    <strong>{{ $heroBadgeTitle }}</strong>
+                    <span>{{ $heroBadgeSubtitle }}</span>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </section>
 
