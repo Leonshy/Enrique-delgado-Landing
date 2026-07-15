@@ -51,7 +51,7 @@
             {!! $hero ? nl2br(e($hero->title)) : 'El Psicólogo del Cambio' !!}
         </h1>
 
-        <div class="hero-desc">
+        <div class="hero-desc rich-text">
             {!! $hero?->body ?? 'Acompaño a personas que quieren transformar su vida emocional y construir una versión más plena, libre y auténtica de sí mismas.' !!}
         </div>
 
@@ -156,7 +156,7 @@
                         </div>
                         <h3>{{ $step->title }}</h3>
                         @if($step->description)
-                        <div>{!! $step->description !!}</div>
+                        <div class="rich-text">{!! $step->description !!}</div>
                         @endif
                     </div>
                 </div>
@@ -336,7 +336,7 @@
                 </div>
                 <h3>{{ $area->title }}</h3>
                 @if($area->description)
-                <div>{!! $area->description !!}</div>
+                <div class="rich-text">{!! $area->description !!}</div>
                 @endif
             </div>
             @empty

@@ -217,7 +217,7 @@
             plugins: 'lists link autolink',
             toolbar: 'blocks | bold italic underline | bullist numlist | link | removeformat | undo redo',
             block_formats: 'Párrafo=p; Título 2=h2; Título 3=h3; Título 4=h4; Título 5=h5',
-            content_style: "body { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-sans'] }}; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; } h2,h3,h4,h5 { font-weight: 600; margin: 0.5em 0; }",
+            content_style: "body { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-sans'] }}; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; } h2,h3,h4,h5 { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-serif'] }}; margin: 0.75em 0 0.35em; } h2 { font-size: 2em; font-weight: 700; } h3 { font-size: 1.5em; font-weight: 700; } h4 { font-size: 1.125em; font-weight: 600; } h5 { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-sans'] }}; font-size: 0.875em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }",
         }, options));
     };
 

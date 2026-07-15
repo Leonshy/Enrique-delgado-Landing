@@ -90,12 +90,23 @@
 .rich-text { color: color-mix(in srgb, var(--color-brand-dark) 75%, white); font-size: 0.9375rem; line-height: 1.75; }
 .rich-text p { margin-bottom: 1rem; }
 .rich-text p:last-child { margin-bottom: 0; }
-.rich-text h2, .rich-text h3, .rich-text h4 {
+.rich-text h2, .rich-text h3, .rich-text h4, .rich-text h5 {
     font-family: var(--font-serif);
     color: var(--color-brand-dark);
+    line-height: 1.3;
     margin: 1.5rem 0 0.5rem;
 }
-.rich-text h2:first-child, .rich-text h3:first-child, .rich-text h4:first-child { margin-top: 0; }
+.rich-text h2 { font-size: 2rem;     font-weight: 700; }
+.rich-text h3 { font-size: 1.5rem;   font-weight: 700; }
+.rich-text h4 { font-size: 1.125rem; font-weight: 600; }
+.rich-text h5 {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.rich-text h2:first-child, .rich-text h3:first-child, .rich-text h4:first-child, .rich-text h5:first-child { margin-top: 0; }
 .rich-text ul, .rich-text ol { margin: 0 0 1rem; padding-left: 1.25rem; }
 .rich-text ul { list-style: disc outside; }
 .rich-text ol { list-style: decimal outside; }
