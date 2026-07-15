@@ -859,6 +859,9 @@
     padding: 1.5rem 1.25rem;
     text-align: center;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 .timeline-item:hover .timeline-card {
@@ -876,7 +879,10 @@
     align-items: center;
     justify-content: center;
     color: var(--color-accent);
-    margin: 0 auto 1rem;
+    flex-shrink: 0;
+}
+.timeline-card .timeline-card-icon {
+    margin-bottom: 1em;
 }
 .timeline-card h3 {
     font-size: 1.0625rem;
@@ -929,10 +935,11 @@
     }
     .timeline-card {
         text-align: left;
+        align-items: flex-start;
         margin-left: 0.5rem;
         flex: 1;
     }
-    .timeline-card-icon { margin: 0 0 0.75rem; }
+    .timeline-card .timeline-card-icon { margin: 0 0 0.75rem; }
 }
 
 /* ════════════════════════════════════════
