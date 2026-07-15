@@ -36,8 +36,9 @@ class ContactoController extends Controller
         $section = LandingSection::where('slug', 'contacto')->firstOrFail();
 
         $section->update([
-            'title'    => $request->title,
-            'subtitle' => HtmlSanitizer::clean($request->subtitle),
+            'title'     => $request->title,
+            'subtitle'  => HtmlSanitizer::clean($request->subtitle),
+            'is_active' => $request->boolean('is_active'),
             'extra'    => json_encode([
                 'label'     => $request->label,
                 'box_title' => $request->box_title,

@@ -13,6 +13,19 @@
     </div>
     @endif
 
+    {{-- ── Visibilidad ── --}}
+    <div class="card flex items-center justify-between">
+        <div>
+            <h2 class="font-semibold text-base" style="color:var(--color-brand-dark);">Visibilidad de la sección</h2>
+            <p class="text-sm text-gray-400 mt-1">Si la desactivas, el formulario de contacto desaparece completamente de la página.</p>
+        </div>
+        <label class="flex items-center gap-2 cursor-pointer shrink-0">
+            <input type="checkbox" name="is_active" value="1" {{ old('is_active', $section->is_active) ? 'checked' : '' }}
+                   class="w-4 h-4" style="accent-color: var(--color-primary);">
+            <span class="text-sm font-medium" style="color: var(--color-brand-dark);">Sección activa</span>
+        </label>
+    </div>
+
     {{-- ── Encabezado ── --}}
     <div class="card space-y-5">
         <h2 class="font-semibold text-base" style="color:var(--color-brand-dark);">Encabezado de la sección</h2>

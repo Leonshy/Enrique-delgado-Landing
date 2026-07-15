@@ -721,6 +721,7 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
     $contactoBoxBody  = $contactoExtra['box_body']  ?? 'La primera sesión es **gratuita y sin compromiso**. Es el espacio para conocernos, contarme lo que estás viviendo y evaluar si puedo ayudarte.';
     $contactoBoxHtml  = preg_replace('/\*\*(.+?)\*\*/u', '<strong style="color:var(--color-brand-dark);">$1</strong>', e($contactoBoxBody));
 @endphp
+@if($contacto?->is_active ?? true)
 <section id="contacto" class="section" style="background:#fff;">
     <div class="container">
         <div style="text-align:center;margin-bottom:3.5rem;" class="reveal">
@@ -881,6 +882,7 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
         </div>
     </div>
 </section>
+@endif
 
 {{-- hCaptcha script --}}
 @if($integrations['hcaptcha_enabled'] && $integrations['hcaptcha_site_key'])
