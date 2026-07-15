@@ -17,10 +17,9 @@
             <li><a href="#faq">FAQ</a></li>
         </ul>
 
+        @php $navbarBtn = \App\Helpers\ButtonHelper::resolveKey('navbar_cta'); @endphp
         <div class="nav-cta-wrap">
-            <a href="#contacto" class="btn-primary" style="padding:0.7rem 1.5rem;font-size:0.875rem;">
-                Agendar sesión
-            </a>
+            <x-cta-button :btn="$navbarBtn" class="btn-primary" style="padding:0.7rem 1.5rem;font-size:0.875rem;" />
             {{-- Hamburger --}}
             <button id="nav-hamburger" aria-label="Abrir menú">
                 <span></span><span></span><span></span>
@@ -36,7 +35,8 @@
         <a href="#sobre-mi">Sobre mí</a>
         <a href="#planes">Planes</a>
         <a href="#faq">Preguntas frecuentes</a>
-        <a href="#contacto" style="color:var(--color-primary);font-weight:600;border-bottom:none;margin-top:0.5rem;">→ Agendar sesión</a>
+        <a href="{{ $navbarBtn['href'] }}" @if($navbarBtn['target'] === '_blank') target="_blank" rel="noopener" @endif
+           style="color:{{ $navbarBtn['whatsapp_style'] ? '#25D366' : 'var(--color-primary)' }};font-weight:600;border-bottom:none;margin-top:0.5rem;">→ {{ $navbarBtn['label'] }}</a>
     </div>
 </nav>
 

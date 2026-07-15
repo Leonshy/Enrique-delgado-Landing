@@ -68,7 +68,7 @@
 
         <div>
             <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción</label>
-            <textarea name="subtitle" rows="2" class="input-field">{{ old('subtitle', $section->subtitle) }}</textarea>
+            <textarea id="video-subtitle-editor" name="subtitle" rows="2" class="input-field">{{ old('subtitle', $section->subtitle) }}</textarea>
         </div>
     </div>
 
@@ -77,4 +77,8 @@
         <a href="{{ route('home') }}#video" target="_blank" class="btn-outline">Ver sitio</a>
     </div>
 </form>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#video-subtitle-editor', { height: 150 }));</script>
+@endpush
 @endsection

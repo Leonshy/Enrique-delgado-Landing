@@ -37,7 +37,7 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción</label>
-            <textarea name="subtitle" rows="2" class="input-field"
+            <textarea id="faq-subtitle-editor" name="subtitle" rows="2" class="input-field"
                       placeholder="Si tu pregunta no está aquí, puedes escribirme directamente...">{{ old('subtitle', $section?->subtitle) }}</textarea>
         </div>
         <label class="flex items-center gap-2 cursor-pointer">
@@ -91,4 +91,8 @@
         </tbody>
     </table>
 </div>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#faq-subtitle-editor', { height: 150 }));</script>
+@endpush
 @endsection

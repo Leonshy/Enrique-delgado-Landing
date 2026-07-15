@@ -127,6 +127,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->whereIn('slot', ['heading', 'body'])->name('settings.typography.custom.upload');
         Route::delete('/tipografia/custom/{slot}', [Admin\SettingsController::class, 'removeCustomFont'])
             ->whereIn('slot', ['heading', 'body'])->name('settings.typography.custom.remove');
+        Route::get('/botones',               [Admin\SettingsController::class, 'buttons'])->name('settings.buttons');
+        Route::post('/botones',              [Admin\SettingsController::class, 'updateButtons'])->name('settings.buttons.update');
 
         // Usuarios
         Route::resource('usuarios', Admin\UserController::class)->except(['show'])->parameters(['usuarios' => 'usuario']);

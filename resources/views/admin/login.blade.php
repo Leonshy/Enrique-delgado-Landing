@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Admin — Enrique Delgado</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('partials.theme-vars')
     @if($hcaptchaEnabled && $hcaptchaSiteKey)
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     @endif
@@ -36,7 +37,7 @@
                 <label class="block text-sm font-medium mb-2" style="color: var(--color-brand-dark);">Email</label>
                 <input type="email" name="email" value="{{ old('email') }}" required autofocus
                        class="input-field @error('email') border-red-400 @enderror"
-                       placeholder="admin@enriquedelgado.com">
+                       placeholder="usuario@email.com">
                 @error('email')
                 <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                 @enderror

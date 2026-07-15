@@ -18,10 +18,10 @@ class SettingsHelper
         Cache::forget("setting_{$key}");
     }
 
-    public static function whatsappUrl(): string
+    public static function whatsappUrl(?string $message = null): string
     {
         $number  = preg_replace('/[^0-9]/', '', static::get('whatsapp', '595981000000'));
-        $message = urlencode(static::get('whatsapp_msg', 'Hola, me interesa una consulta.'));
+        $message = urlencode($message ?: static::get('whatsapp_msg', 'Hola, me interesa una consulta.'));
         return "https://wa.me/{$number}?text={$message}";
     }
 }

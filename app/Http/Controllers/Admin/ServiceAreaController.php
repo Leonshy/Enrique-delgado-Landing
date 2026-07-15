@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HtmlSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\LandingSection;
 use App\Models\ServiceArea;
@@ -31,7 +32,7 @@ class ServiceAreaController extends Controller
         LandingSection::where('slug', 'areas')->update([
             'extra'     => json_encode(['label' => $request->label]),
             'title'     => $request->title,
-            'subtitle'  => $request->subtitle,
+            'subtitle'  => HtmlSanitizer::clean($request->subtitle),
             'is_active' => $request->boolean('is_active'),
         ]);
 
@@ -72,11 +73,15 @@ class ServiceAreaController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'title'       => ['required', 'string', 'max:100'],
-            'description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string', 'max:255'],
             'icon'        => ['nullable', 'string', 'max:30'],
             'order'       => ['nullable', 'integer'],
         ]);
+
+        $data['description'] = HtmlSanitizer::clean($data['description'] ?? '');
+
+        return $data;
     }
 }

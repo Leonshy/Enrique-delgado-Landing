@@ -71,7 +71,6 @@
         {{-- ── Botón CTA ── --}}
         <div class="card space-y-4">
             <h2 class="font-semibold text-base" style="color:var(--color-brand-dark);">Botón "Comenzar ahora"</h2>
-            <p class="text-sm text-gray-400">El botón abre WhatsApp con el mensaje personalizado para este plan.</p>
 
             <div>
                 <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Texto del botón</label>
@@ -80,14 +79,27 @@
                        class="input-field"
                        placeholder="Ej: Comenzar ahora">
             </div>
-            <div>
-                <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">
-                    Mensaje de WhatsApp
-                    <span class="text-gray-400 font-normal text-xs ml-1">Se enviará pre-cargado al abrir WhatsApp</span>
-                </label>
-                <textarea name="whatsapp_text" rows="3" class="input-field"
-                          placeholder="Ej: Hola, me interesa el plan de 5 sesiones. ¿Podemos hablar?">{{ old('whatsapp_text', $plan->whatsapp_text) }}</textarea>
-            </div>
+
+            @include('admin.partials.button-fields', [
+                'uid' => 'plan-' . ($plan->id ?? 'new'),
+                'lockIconOnWhatsapp' => false,
+                'fields' => [
+                    'icon' => 'icon', 'action_type' => 'action_type',
+                    'url' => 'action_url', 'url_target' => 'action_url_target',
+                    'email_to' => 'action_email_to', 'email_subject' => 'action_email_subject', 'email_body' => 'action_email_body',
+                    'whatsapp_message' => 'whatsapp_text',
+                ],
+                'cfg' => [
+                    'icon' => $plan->icon ?? 'none',
+                    'action_type' => $plan->action_type ?? 'whatsapp',
+                    'url' => $plan->action_url ?? '',
+                    'url_target' => $plan->action_url_target ?? '_blank',
+                    'email_to' => $plan->action_email_to ?? '',
+                    'email_subject' => $plan->action_email_subject ?? '',
+                    'email_body' => $plan->action_email_body ?? '',
+                    'whatsapp_message' => $plan->whatsapp_text ?? '',
+                ],
+            ])
         </div>
 
         {{-- ── Opciones ── --}}
@@ -120,6 +132,6 @@
 </div>
 
 @push('scripts')
-<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#plan-description-editor', { height: 200, toolbar: 'bold italic | bullist | link | removeformat | undo redo' }));</script>
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#plan-description-editor', { height: 200, toolbar: 'blocks | bold italic | bullist numlist | link | removeformat | undo redo' }));</script>
 @endpush
 @endsection

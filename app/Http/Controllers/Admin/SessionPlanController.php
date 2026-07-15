@@ -71,7 +71,7 @@ class SessionPlanController extends Controller
 
         $section->update([
             'title'     => $request->title,
-            'subtitle'  => $request->subtitle,
+            'subtitle'  => HtmlSanitizer::clean($request->subtitle),
             'is_active' => $request->boolean('is_active'),
             'extra'     => json_encode($extra),
         ]);
@@ -88,11 +88,19 @@ class SessionPlanController extends Controller
             'price'          => ['nullable', 'string', 'max:50'],
             'period'         => ['nullable', 'string', 'max:50'],
             'cta_label'      => ['nullable', 'string', 'max:80'],
+            'icon'                 => ['nullable', 'string', 'max:30'],
+            'action_type'          => ['nullable', 'in:url,email,whatsapp'],
+            'action_url'           => ['nullable', 'string', 'max:255', 'regex:/^(https?:\/\/|\/|#)/'],
+            'action_url_target'    => ['nullable', 'in:_self,_blank'],
+            'action_email_to'      => ['nullable', 'email', 'max:255'],
+            'action_email_subject' => ['nullable', 'string', 'max:255'],
+            'action_email_body'    => ['nullable', 'string', 'max:1000'],
             'whatsapp_text'  => ['nullable', 'string', 'max:500'],
             'order'          => ['nullable', 'integer'],
         ]);
 
         $data['description'] = HtmlSanitizer::clean($data['description'] ?? '');
+        $data['action_type'] = $data['action_type'] ?? 'whatsapp';
 
         return $data;
     }

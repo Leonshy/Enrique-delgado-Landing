@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\ButtonHelper;
 use App\Helpers\FontHelper;
 use App\Helpers\HcaptchaHelper;
 use App\Helpers\ImageOptimizer;
@@ -389,5 +390,56 @@ class SettingsController extends Controller
 
         Cache::flush();
         return back()->with('success', 'Tipografía personalizada eliminada.');
+    }
+
+    public function buttons(): View
+    {
+        $slots = [
+            'navbar_cta'     => 'Navbar — botón "Agendar sesión"',
+            'footer_cta'     => 'Footer — botón "Solicitar consulta"',
+            'whatsapp_float' => 'WhatsApp flotante',
+        ];
+        $values = [];
+        foreach (array_keys($slots) as $key) {
+            $values[$key] = ButtonHelper::get($key);
+        }
+
+        return view('admin.settings.buttons', compact('slots', 'values'));
+    }
+
+    public function updateButtons(Request $request): RedirectResponse
+    {
+        $slots = array_keys(ButtonHelper::globalDefaults());
+
+        $rules = [];
+        foreach ($slots as $slot) {
+            $rules["{$slot}_label"]          = ['nullable', 'string', 'max:100'];
+            $rules["{$slot}_icon"]           = ['nullable', 'string', 'max:30'];
+            $rules["{$slot}_action_type"]    = ['required', 'in:url,email,whatsapp'];
+            $rules["{$slot}_url"]            = ['nullable', 'string', 'max:255', 'regex:/^(https?:\/\/|\/|#)/'];
+            $rules["{$slot}_url_target"]     = ['nullable', 'in:_self,_blank'];
+            $rules["{$slot}_email_to"]       = ['nullable', 'email', 'max:255'];
+            $rules["{$slot}_email_subject"]  = ['nullable', 'string', 'max:255'];
+            $rules["{$slot}_email_body"]     = ['nullable', 'string', 'max:1000'];
+            $rules["{$slot}_whatsapp_message"] = ['nullable', 'string', 'max:500'];
+        }
+        $request->validate($rules);
+
+        foreach ($slots as $slot) {
+            ButtonHelper::set($slot, [
+                'label'            => $request->input("{$slot}_label"),
+                'icon'             => $request->input("{$slot}_icon"),
+                'action_type'      => $request->input("{$slot}_action_type"),
+                'url'              => $request->input("{$slot}_url"),
+                'url_target'       => $request->input("{$slot}_url_target"),
+                'email_to'         => $request->input("{$slot}_email_to"),
+                'email_subject'    => $request->input("{$slot}_email_subject"),
+                'email_body'       => $request->input("{$slot}_email_body"),
+                'whatsapp_message' => $request->input("{$slot}_whatsapp_message"),
+            ]);
+        }
+
+        Cache::flush();
+        return back()->with('success', 'Botones actualizados.');
     }
 }

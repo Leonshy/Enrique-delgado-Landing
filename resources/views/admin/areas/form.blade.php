@@ -23,8 +23,10 @@
         </div>
 
         <div>
-            <label class="block text-sm font-medium mb-1" style="color: var(--color-brand-dark);">Descripción</label>
-            <textarea name="description" rows="3" class="input-field" placeholder="Breve descripción del área...">{{ old('description', $area->description) }}</textarea>
+            <label class="block text-sm font-medium mb-1" style="color: var(--color-brand-dark);">Descripción
+                <span class="text-gray-400 font-normal text-xs ml-1">Máx. 255 caracteres — se muestra en una tarjeta corta</span>
+            </label>
+            <textarea id="area-description-editor" name="description" rows="3" class="input-field" placeholder="Breve descripción del área...">{{ old('description', $area->description) }}</textarea>
         </div>
 
         {{-- Selector de ícono --}}
@@ -85,4 +87,8 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#area-description-editor', { height: 150 }));</script>
+@endpush
 @endsection

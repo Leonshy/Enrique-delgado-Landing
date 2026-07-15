@@ -27,8 +27,8 @@
             </div>
         </div>
         <div>
-            <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Texto descriptivo</label>
-            <textarea name="subtitle" rows="2" class="input-field">{{ old('subtitle', $section?->subtitle ?? 'Trabajo con personas que enfrentan distintos desafíos. Si tu situación no aparece aquí, escríbeme: seguramente podemos trabajarla.') }}</textarea>
+            <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción</label>
+            <textarea id="areas-subtitle-editor" name="subtitle" rows="2" class="input-field">{{ old('subtitle', $section?->subtitle ?? 'Trabajo con personas que enfrentan distintos desafíos. Si tu situación no aparece aquí, escríbeme: seguramente podemos trabajarla.') }}</textarea>
         </div>
         <label class="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" name="is_active" value="1" {{ old('is_active', $section?->is_active ?? true) ? 'checked' : '' }}
@@ -107,4 +107,8 @@
         </tbody>
     </table>
 </div>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#areas-subtitle-editor', { height: 150 }));</script>
+@endpush
 @endsection

@@ -59,9 +59,8 @@
                     @endif
                 </ul>
                 <div style="margin-top:1.75rem;">
-                    <a href="#contacto" class="btn-white" style="font-size:0.875rem;padding:0.65rem 1.5rem;">
-                        Solicitar consulta
-                    </a>
+                    @php $footerBtn = \App\Helpers\ButtonHelper::resolveKey('footer_cta'); @endphp
+                    <x-cta-button :btn="$footerBtn" class="btn-white" style="font-size:0.875rem;padding:0.65rem 1.5rem;" />
                 </div>
             </div>
 

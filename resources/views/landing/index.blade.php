@@ -11,6 +11,29 @@
     $heroBadgeEnabled  = $heroExtra['cert_badge_enabled'] ?? true;
     $heroBadgeTitle    = $heroExtra['cert_badge_title']    ?? 'Certificado';
     $heroBadgeSubtitle = $heroExtra['cert_badge_subtitle'] ?? 'Psicólogo Clínico';
+
+    $heroBtn1 = \App\Helpers\ButtonHelper::resolve([
+        'label'            => $hero?->cta_text ?? 'Quiero solicitar una consulta',
+        'icon'             => $heroExtra['btn1_icon'] ?? 'list',
+        'action_type'      => $heroExtra['btn1_action_type'] ?? 'url',
+        'url'              => $hero?->cta_url ?? '#contacto',
+        'url_target'       => $heroExtra['btn1_url_target'] ?? '_self',
+        'email_to'         => $heroExtra['btn1_email_to'] ?? null,
+        'email_subject'    => $heroExtra['btn1_email_subject'] ?? null,
+        'email_body'       => $heroExtra['btn1_email_body'] ?? null,
+        'whatsapp_message' => $heroExtra['btn1_whatsapp_message'] ?? null,
+    ]);
+    $heroBtn2 = \App\Helpers\ButtonHelper::resolve([
+        'label'            => $heroExtra['btn2_text'] ?? 'Escribir por WhatsApp',
+        'icon'             => $heroExtra['btn2_icon'] ?? 'whatsapp',
+        'action_type'      => $heroExtra['btn2_action_type'] ?? ($heroExtra['btn2_url'] ?? null ? 'url' : 'whatsapp'),
+        'url'              => $heroExtra['btn2_url'] ?? '',
+        'url_target'       => $heroExtra['btn2_url_target'] ?? '_blank',
+        'email_to'         => $heroExtra['btn2_email_to'] ?? null,
+        'email_subject'    => $heroExtra['btn2_email_subject'] ?? null,
+        'email_body'       => $heroExtra['btn2_email_body'] ?? null,
+        'whatsapp_message' => $heroExtra['btn2_whatsapp_message'] ?? null,
+    ]);
 @endphp
 <section id="inicio" class="hero">
     <img src="{{ $hero?->image_path ? asset('storage/'.$hero->image_path) : asset('images/enrique-hero-nobg.webp') }}"
@@ -40,19 +63,13 @@
             {!! $hero ? nl2br(e($hero->title)) : 'El Psicólogo del Cambio' !!}
         </h1>
 
-        <p class="hero-desc">
-            {{ $hero?->body ?? 'Acompaño a personas que quieren transformar su vida emocional y construir una versión más plena, libre y auténtica de sí mismas.' }}
-        </p>
+        <div class="hero-desc">
+            {!! $hero?->body ?? 'Acompaño a personas que quieren transformar su vida emocional y construir una versión más plena, libre y auténtica de sí mismas.' !!}
+        </div>
 
         <div class="hero-actions">
-            <a href="{{ $hero?->cta_url ?? '#contacto' }}" class="btn-primary">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-                {{ $hero?->cta_text ?? 'Quiero solicitar una consulta' }}
-            </a>
-            <a href="{{ $heroExtra['btn2_url'] ?? $settings['whatsappUrl'] }}" target="_blank" rel="noopener" class="btn-outline">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                {{ $heroExtra['btn2_text'] ?? 'Escribir por WhatsApp' }}
-            </a>
+            <x-cta-button :btn="$heroBtn1" class="btn-primary" />
+            <x-cta-button :btn="$heroBtn2" class="btn-outline" />
         </div>
     </div>
 </section>
@@ -97,9 +114,9 @@
                 {{ $proceso?->title ?? 'El proceso de cambio' }}
             </h2>
             @if($proceso?->subtitle)
-            <p style="color:rgba(255,255,255,0.55);font-size:1.0625rem;max-width:520px;margin:0 auto;line-height:1.75;">
-                {{ $proceso->subtitle }}
-            </p>
+            <div style="color:rgba(255,255,255,0.55);font-size:1.0625rem;max-width:520px;margin:0 auto;line-height:1.75;">
+                {!! $proceso->subtitle !!}
+            </div>
             @else
             <p style="color:rgba(255,255,255,0.55);font-size:1.0625rem;max-width:520px;margin:0 auto;line-height:1.75;">
                 Un camino claro, paso a paso, para que sepas exactamente qué esperar desde el primer día.
@@ -137,7 +154,7 @@
                         </div>
                         <h3>{{ $step->title }}</h3>
                         @if($step->description)
-                        <p>{{ Str::limit($step->description, 120) }}</p>
+                        <div>{!! $step->description !!}</div>
                         @endif
                     </div>
                 </div>
@@ -185,9 +202,9 @@
                 {{ $video->title ?? 'Mirá cómo trabajo' }}
             </h2>
             @if($video->subtitle)
-            <p class="section-subtitle" style="margin:0 auto;">
-                {{ $video->subtitle }}
-            </p>
+            <div class="section-subtitle" style="margin:0 auto;">
+                {!! $video->subtitle !!}
+            </div>
             @endif
         </div>
 
@@ -302,9 +319,9 @@
             <h2 class="section-title" style="margin-bottom:1rem;">
                 {{ $areasSection?->title ?? 'Áreas de acompañamiento' }}
             </h2>
-            <p class="section-subtitle" style="margin:0 auto;">
-                {{ $areasSection?->subtitle ?? 'Trabajo con personas que enfrentan distintos desafíos. Si tu situación no aparece aquí, escríbeme: seguramente podemos trabajarla.' }}
-            </p>
+            <div class="section-subtitle" style="margin:0 auto;">
+                {!! $areasSection?->subtitle ?? 'Trabajo con personas que enfrentan distintos desafíos. Si tu situación no aparece aquí, escríbeme: seguramente podemos trabajarla.' !!}
+            </div>
         </div>
 
         <div class="areas-grid">
@@ -317,7 +334,7 @@
                 </div>
                 <h3>{{ $area->title }}</h3>
                 @if($area->description)
-                <p>{{ Str::limit($area->description, 100) }}</p>
+                <div>{!! $area->description !!}</div>
                 @endif
             </div>
             @empty
@@ -464,7 +481,6 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
     $planesExtra   = json_decode($planesSection?->extra ?? '{}', true) ?: [];
     $planesLabel   = $planesExtra['label']       ?? 'Inversión en ti';
     $planesFooter  = $planesExtra['footer_note'] ?? 'Los precios se informan en la consulta inicial. Primera sesión gratuita y sin compromiso.';
-    $whatsappBase  = 'https://wa.me/' . preg_replace('/[^0-9]/', '', $settings['whatsapp'] ?? '595981000000');
 @endphp
 @if($planesSection?->is_active ?? true)
 <section id="planes" class="section" style="background:#fff;">
@@ -474,17 +490,25 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
             <h2 class="section-title" style="margin-bottom:1rem;">
                 {{ $planesSection?->title ?? 'Planes de acompañamiento' }}
             </h2>
-            <p class="section-subtitle" style="margin:0 auto;">
-                {{ $planesSection?->subtitle ?? 'Cada plan está pensado para distintos momentos y necesidades. Si tienes dudas, podemos conversarlas en la consulta inicial gratuita.' }}
-            </p>
+            <div class="section-subtitle" style="margin:0 auto;">
+                {!! $planesSection?->subtitle ?? 'Cada plan está pensado para distintos momentos y necesidades. Si tienes dudas, podemos conversarlas en la consulta inicial gratuita.' !!}
+            </div>
         </div>
 
         <div class="planes-grid">
             @forelse($plans as $plan)
             @php
-                $planWaUrl = $plan->whatsapp_text
-                    ? $whatsappBase . '?text=' . urlencode($plan->whatsapp_text)
-                    : $settings['whatsappUrl'];
+                $planBtn = \App\Helpers\ButtonHelper::resolve([
+                    'label'            => $plan->cta_label ?? 'Comenzar ahora',
+                    'icon'             => $plan->icon ?? 'none',
+                    'action_type'      => $plan->action_type ?? 'whatsapp',
+                    'url'              => $plan->action_url,
+                    'url_target'       => $plan->action_url_target ?? '_blank',
+                    'email_to'         => $plan->action_email_to,
+                    'email_subject'    => $plan->action_email_subject,
+                    'email_body'       => $plan->action_email_body,
+                    'whatsapp_message' => $plan->whatsapp_text,
+                ], enforceWhatsappStyle: false);
             @endphp
             <div class="plan-card {{ $plan->is_featured ? 'featured' : '' }} reveal delay-{{ $loop->iteration }}">
                 @if($plan->is_featured)
@@ -505,9 +529,7 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
                 @if($plan->description)
                 <div class="plan-description rich-text">{!! $plan->description !!}</div>
                 @endif
-                <a href="{{ $planWaUrl }}" target="_blank" rel="noopener" class="plan-cta">
-                    {{ $plan->cta_label ?? 'Comenzar ahora' }}
-                </a>
+                <x-cta-button :btn="$planBtn" class="plan-cta" />
             </div>
             @empty
             @foreach([
@@ -516,15 +538,15 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
                 ['10 sesiones',false, 'Para un acompañamiento sostenido a lo largo del tiempo.',      null],
             ] as $i => $p)
             @php
-                $defWaUrl = $p[3]
-                    ? $whatsappBase . '?text=' . urlencode($p[3])
-                    : $settings['whatsappUrl'];
+                $defBtn = \App\Helpers\ButtonHelper::resolve([
+                    'label' => 'Comenzar ahora', 'action_type' => 'whatsapp', 'whatsapp_message' => $p[3],
+                ], enforceWhatsappStyle: false);
             @endphp
             <div class="plan-card {{ $p[1] ? 'featured' : '' }} reveal delay-{{ $i + 1 }}">
                 @if($p[1])<div class="plan-badge">Más elegido</div>@endif
                 <div class="plan-name">{{ $p[0] }}</div>
                 <p class="plan-description">{{ $p[2] }}</p>
-                <a href="{{ $defWaUrl }}" target="_blank" rel="noopener" class="plan-cta">Comenzar ahora</a>
+                <x-cta-button :btn="$defBtn" class="plan-cta" />
             </div>
             @endforeach
             @endforelse
@@ -556,9 +578,9 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
             <h2 class="section-title" style="margin-bottom:1rem;">
                 {{ $faqSection?->title ?? 'Preguntas frecuentes' }}
             </h2>
-            <p class="section-subtitle" style="margin:0 auto;">
-                {{ $faqSection?->subtitle ?? 'Si tu pregunta no está aquí, puedes escribirme directamente. Siempre respondo.' }}
-            </p>
+            <div class="section-subtitle" style="margin:0 auto;">
+                {!! $faqSection?->subtitle ?? 'Si tu pregunta no está aquí, puedes escribirme directamente. Siempre respondo.' !!}
+            </div>
         </div>
 
         <div class="faq-grid">
@@ -643,6 +665,29 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
     $ctaBtn1    = $ctaExtra['btn1_text'] ?? 'Solicitar sesión gratuita';
     $ctaBtn1Url = $ctaExtra['btn1_url']  ?? '#contacto';
     $ctaBtn2    = $ctaExtra['btn2_text'] ?? 'Escribir por WhatsApp';
+
+    $ctaButton1 = \App\Helpers\ButtonHelper::resolve([
+        'label'            => $ctaBtn1,
+        'icon'             => $ctaExtra['btn1_icon'] ?? 'list',
+        'action_type'      => $ctaExtra['btn1_action_type'] ?? 'url',
+        'url'              => $ctaBtn1Url,
+        'url_target'       => $ctaExtra['btn1_url_target'] ?? '_self',
+        'email_to'         => $ctaExtra['btn1_email_to'] ?? null,
+        'email_subject'    => $ctaExtra['btn1_email_subject'] ?? null,
+        'email_body'       => $ctaExtra['btn1_email_body'] ?? null,
+        'whatsapp_message' => $ctaExtra['btn1_whatsapp_message'] ?? null,
+    ]);
+    $ctaButton2 = \App\Helpers\ButtonHelper::resolve([
+        'label'            => $ctaBtn2,
+        'icon'             => $ctaExtra['btn2_icon'] ?? 'none',
+        'action_type'      => $ctaExtra['btn2_action_type'] ?? 'whatsapp',
+        'url'              => $ctaExtra['btn2_url'] ?? '',
+        'url_target'       => $ctaExtra['btn2_url_target'] ?? '_blank',
+        'email_to'         => $ctaExtra['btn2_email_to'] ?? null,
+        'email_subject'    => $ctaExtra['btn2_email_subject'] ?? null,
+        'email_body'       => $ctaExtra['btn2_email_body'] ?? null,
+        'whatsapp_message' => $ctaExtra['btn2_whatsapp_message'] ?? null,
+    ]);
 @endphp
 @if($ctaSection?->is_active ?? true)
 <section id="primer-paso" class="cta-banner">
@@ -652,17 +697,12 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
             <h2 class="section-title light" style="margin-bottom:1.25rem;">
                 {!! $ctaSection ? nl2br(e($ctaSection->title)) : '¿Listo para comenzar<br>tu proceso de cambio?' !!}
             </h2>
-            <p style="color:rgba(255,255,255,0.7);font-size:1.0625rem;max-width:480px;margin:0 auto 2.5rem;line-height:1.75;">
-                {{ $ctaSection?->subtitle ?? 'La primera sesión es gratuita. Sin compromisos. Solo una conversación para ver si podemos trabajar juntos.' }}
-            </p>
+            <div style="color:rgba(255,255,255,0.7);font-size:1.0625rem;max-width:480px;margin:0 auto 2.5rem;line-height:1.75;">
+                {!! $ctaSection?->subtitle ?? 'La primera sesión es gratuita. Sin compromisos. Solo una conversación para ver si podemos trabajar juntos.' !!}
+            </div>
             <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
-                <a href="{{ $ctaBtn1Url }}" class="btn-white">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-                    {{ $ctaBtn1 }}
-                </a>
-                <a href="{{ $settings['whatsappUrl'] }}" target="_blank" rel="noopener" class="btn-outline-light">
-                    {{ $ctaBtn2 }}
-                </a>
+                <x-cta-button :btn="$ctaButton1" class="btn-white" />
+                <x-cta-button :btn="$ctaButton2" class="btn-outline-light" />
             </div>
         </div>
     </div>
@@ -688,9 +728,9 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
             <h2 class="section-title" style="margin-bottom:1rem;">
                 {{ $contacto?->title ?? 'Formulario de Contacto' }}
             </h2>
-            <p class="section-subtitle" style="margin:0 auto;">
-                {{ $contacto?->subtitle ?? 'Completa el siguiente formulario y me pondré en contacto contigo a la brevedad para conocer mejor tu situación.' }}
-            </p>
+            <div class="section-subtitle" style="margin:0 auto;">
+                {!! $contacto?->subtitle ?? 'Completa el siguiente formulario y me pondré en contacto contigo a la brevedad para conocer mejor tu situación.' !!}
+            </div>
         </div>
 
         <div class="contact-grid">
@@ -853,9 +893,7 @@ $activeTestimonials = $testimonials->count() ? $testimonials : collect($defaultT
 </button>
 
 {{-- WhatsApp float --}}
-<a href="{{ $settings['whatsappUrl'] }}" target="_blank" rel="noopener noreferrer"
-   class="whatsapp-float" aria-label="Contáctanos por WhatsApp">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
+@php $waFloatBtn = \App\Helpers\ButtonHelper::resolveKey('whatsapp_float', 28); @endphp
+<x-cta-button :btn="$waFloatBtn" class="whatsapp-float" aria-label="Contáctanos por WhatsApp" />
 
 @endsection

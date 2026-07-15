@@ -115,11 +115,21 @@
             </p>
             <div>
                 <label class="block text-sm font-medium mb-2" style="color: var(--color-brand-dark);">API Key</label>
-                <input type="text" name="tinymce_api_key" value="{{ old('tinymce_api_key', $settings['tinymce_api_key']->value ?? '') }}" class="input-field font-mono text-sm" placeholder="ej: abc123def456...">
+                <input type="text" id="tinymce_api_key" name="tinymce_api_key" value="{{ old('tinymce_api_key', $settings['tinymce_api_key']->value ?? '') }}" class="input-field font-mono text-sm" placeholder="ej: abc123def456...">
             </div>
             <div class="p-3 rounded-xl text-sm bg-amber-50 text-amber-700 border border-amber-200">
                 Pasos: 1) creá una cuenta gratuita en tiny.cloud → 2) copiá tu API key desde el dashboard → 3) agregá el dominio de este sitio (y <code>localhost</code> para pruebas) en la sección "Approved Domains" de tu cuenta → 4) pegá la key acá y guardá.
                 Sin key configurada, el editor funciona igual pero muestra un aviso de "modo de evaluación".
+            </div>
+
+            <div class="p-4 rounded-xl" style="background:var(--color-brand-muted);">
+                <p class="text-xs text-gray-500 mb-3">
+                    Carga el editor de verdad con la key de arriba (aunque todavía no la hayas guardado) y revisa si TinyMCE
+                    muestra el aviso de "dominio no registrado" — la única forma real de confirmar que el dominio quedó bien aprobado en tu cuenta.
+                </p>
+                <button type="button" id="tinymce-test-btn" class="btn-outline text-sm">Probar editor con esta key</button>
+                <div id="tinymce-test-preview" class="mt-3"></div>
+                <p id="tinymce-test-result" class="text-sm mt-2 font-medium"></p>
             </div>
         </div>
 
@@ -305,6 +315,73 @@ function csrfHeaders() {
         'Accept': 'application/json',
     };
 }
+
+// --- TinyMCE ---
+document.getElementById('tinymce-test-btn').addEventListener('click', function () {
+    const btn = this;
+    const result = document.getElementById('tinymce-test-result');
+    const preview = document.getElementById('tinymce-test-preview');
+    const apiKey = document.getElementById('tinymce_api_key').value.trim() || 'no-api-key';
+
+    btn.disabled = true;
+    result.textContent = '';
+    result.style.color = '#6b7280';
+    preview.innerHTML = '<textarea id="tinymce-probe"></textarea>';
+
+    // Si ya hay un tinymce cargado (con otra key, desde el layout), lo sacamos para
+    // forzar que se pida el script de nuevo con la key que se está probando acá.
+    if (window.tinymce) {
+        window.tinymce.remove('#tinymce-probe');
+    }
+    document.querySelectorAll('script[src*="cdn.tiny.cloud"]').forEach(s => s.remove());
+    delete window.tinymce;
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.tiny.cloud/1/' + encodeURIComponent(apiKey) + '/tinymce/6/tinymce.min.js';
+    script.referrerPolicy = 'origin';
+    script.onerror = function () {
+        btn.disabled = false;
+        result.textContent = 'No se pudo cargar el script de TinyMCE. Revisá la key o la conexión.';
+        result.style.color = '#b91c1c';
+    };
+    script.onload = function () {
+        if (!window.tinymce) {
+            btn.disabled = false;
+            result.textContent = 'El script cargó pero TinyMCE no quedó disponible. Puede que la key tenga un formato inválido.';
+            result.style.color = '#b91c1c';
+            return;
+        }
+
+        window.tinymce.init({
+            selector: '#tinymce-probe',
+            height: 150,
+            menubar: false,
+            branding: false,
+            plugins: 'lists link autolink',
+            toolbar: 'bold italic | link',
+            setup: function (editor) {
+                editor.on('init', function () {
+                    // Le damos ~2.5s: si la key o el dominio no está aprobado, TinyMCE
+                    // deshabilita el editor (clase .tox-tinymce--disabled) y muestra un
+                    // aviso aparte en el body. La clase es más confiable de detectar que
+                    // buscar el aviso, que se renderiza fuera de este contenedor.
+                    setTimeout(function () {
+                        const disabled = preview.querySelector('.tox-tinymce--disabled');
+                        btn.disabled = false;
+                        if (disabled) {
+                            result.textContent = 'TinyMCE deshabilitó el editor con esta key — el dominio no está aprobado o la key es inválida. Revisá "Approved Domains" en tu cuenta de tiny.cloud.';
+                            result.style.color = '#b91c1c';
+                        } else {
+                            result.textContent = '✓ El editor cargó sin avisos — la key y el dominio están aprobados.';
+                            result.style.color = '#047857';
+                        }
+                    }, 2500);
+                });
+            },
+        });
+    };
+    document.head.appendChild(script);
+});
 
 // --- Sentry ---
 document.getElementById('sentry-test-btn').addEventListener('click', async function () {

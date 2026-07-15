@@ -67,7 +67,7 @@ class FaqController extends Controller
 
         $section->update([
             'title'     => $request->title,
-            'subtitle'  => $request->subtitle,
+            'subtitle'  => HtmlSanitizer::clean($request->subtitle),
             'is_active' => $request->boolean('is_active'),
             'extra'     => json_encode($extra),
         ]);

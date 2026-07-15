@@ -29,7 +29,7 @@
 
         <div>
             <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción</label>
-            <textarea name="body" rows="4" class="input-field">{{ old('body', $hero->body ?? 'Acompaño a personas que quieren transformar su vida emocional y construir una versión más plena, libre y auténtica de sí mismas.') }}</textarea>
+            <textarea id="hero-body-editor" name="body" rows="4" class="input-field">{{ old('body', $hero->body ?? 'Acompaño a personas que quieren transformar su vida emocional y construir una versión más plena, libre y auténtica de sí mismas.') }}</textarea>
         </div>
     </div>
 
@@ -37,27 +37,58 @@
     <div class="card space-y-5">
         <h2 class="font-semibold text-base" style="color:var(--color-brand-dark);">Botones</h2>
 
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl space-y-4" style="background:var(--color-brand-muted);">
+            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Botón 1 (principal)</p>
             <div>
-                <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Botón principal — texto</label>
+                <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Texto</label>
                 <input type="text" name="cta_text" value="{{ old('cta_text', $hero->cta_text ?? 'Quiero solicitar una consulta') }}" class="input-field" placeholder="Quiero solicitar una consulta">
             </div>
-            <div>
-                <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Botón principal — URL</label>
-                <input type="text" name="cta_url" value="{{ old('cta_url', $hero->cta_url ?? '#contacto') }}" class="input-field" placeholder="#contacto o /ruta">
-                <p class="text-xs text-gray-400 mt-1">Acepta <code>#ancla</code>, <code>/ruta</code> o URL completa.</p>
-            </div>
+            @include('admin.partials.button-fields', [
+                'uid' => 'hero-btn1',
+                'fields' => [
+                    'icon' => 'btn1_icon', 'action_type' => 'btn1_action_type',
+                    'url' => 'cta_url', 'url_target' => 'btn1_url_target',
+                    'email_to' => 'btn1_email_to', 'email_subject' => 'btn1_email_subject', 'email_body' => 'btn1_email_body',
+                    'whatsapp_message' => 'btn1_whatsapp_message',
+                ],
+                'cfg' => [
+                    'icon' => $extra['btn1_icon'] ?? 'none',
+                    'action_type' => $extra['btn1_action_type'],
+                    'url' => $hero->cta_url ?? '#contacto',
+                    'url_target' => $extra['btn1_url_target'] ?? '_self',
+                    'email_to' => $extra['btn1_email_to'] ?? '',
+                    'email_subject' => $extra['btn1_email_subject'] ?? '',
+                    'email_body' => $extra['btn1_email_body'] ?? '',
+                    'whatsapp_message' => $extra['btn1_whatsapp_message'] ?? '',
+                ],
+            ])
         </div>
 
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl space-y-4" style="background:var(--color-brand-muted);">
+            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Botón 2 (secundario)</p>
             <div>
-                <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Botón WhatsApp — texto</label>
+                <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Texto</label>
                 <input type="text" name="btn2_text" value="{{ old('btn2_text', $extra['btn2_text'] ?? 'Escribir por WhatsApp') }}" class="input-field" placeholder="Escribir por WhatsApp">
             </div>
-            <div>
-                <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Botón WhatsApp — URL</label>
-                <input type="text" name="btn2_url" value="{{ old('btn2_url', $extra['btn2_url'] ?? '') }}" class="input-field" placeholder="https://wa.me/595...">
-            </div>
+            @include('admin.partials.button-fields', [
+                'uid' => 'hero-btn2',
+                'fields' => [
+                    'icon' => 'btn2_icon', 'action_type' => 'btn2_action_type',
+                    'url' => 'btn2_url', 'url_target' => 'btn2_url_target',
+                    'email_to' => 'btn2_email_to', 'email_subject' => 'btn2_email_subject', 'email_body' => 'btn2_email_body',
+                    'whatsapp_message' => 'btn2_whatsapp_message',
+                ],
+                'cfg' => [
+                    'icon' => $extra['btn2_icon'] ?? 'whatsapp',
+                    'action_type' => $extra['btn2_action_type'],
+                    'url' => $extra['btn2_url'] ?? '',
+                    'url_target' => $extra['btn2_url_target'] ?? '_self',
+                    'email_to' => $extra['btn2_email_to'] ?? '',
+                    'email_subject' => $extra['btn2_email_subject'] ?? '',
+                    'email_body' => $extra['btn2_email_body'] ?? '',
+                    'whatsapp_message' => $extra['btn2_whatsapp_message'] ?? '',
+                ],
+            ])
         </div>
     </div>
 
@@ -190,4 +221,8 @@
         <a href="{{ route('home') }}" target="_blank" class="btn-outline">Ver sitio</a>
     </div>
 </form>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#hero-body-editor', { height: 180 }));</script>
+@endpush
 @endsection

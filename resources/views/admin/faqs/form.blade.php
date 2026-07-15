@@ -45,6 +45,6 @@
 </div>
 
 @push('scripts')
-<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#faq-answer-editor', { height: 220, toolbar: 'bold italic | bullist numlist | link | removeformat | undo redo' }));</script>
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#faq-answer-editor', { height: 220, toolbar: 'blocks | bold italic | bullist numlist | link | removeformat | undo redo' }));</script>
 @endpush
 @endsection

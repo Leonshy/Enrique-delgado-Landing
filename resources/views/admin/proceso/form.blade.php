@@ -41,8 +41,10 @@
         </div>
 
         <div>
-            <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción <span class="text-red-500">*</span></label>
-            <textarea name="description" rows="3" required class="input-field"
+            <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción <span class="text-red-500">*</span>
+                <span class="text-gray-400 font-normal text-xs ml-1">Máx. 255 caracteres — se muestra en una tarjeta corta</span>
+            </label>
+            <textarea id="step-description-editor" name="description" rows="3" required class="input-field"
                       placeholder="Breve descripción de este paso...">{{ old('description', $step->description) }}</textarea>
         </div>
 
@@ -97,4 +99,8 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#step-description-editor', { height: 150 }));</script>
+@endpush
 @endsection

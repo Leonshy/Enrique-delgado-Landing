@@ -130,6 +130,7 @@
     font-size: 0.9375rem;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -151,6 +152,7 @@
     font-size: 0.9375rem;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -171,6 +173,7 @@
     font-size: 0.9375rem;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -189,6 +192,7 @@
     font-size: 0.9375rem;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -198,6 +202,29 @@
     background: var(--color-brand-muted);
     transform: translateY(-2px);
     box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* ════════════════════════════════════════
+   BOTÓN WHATSAPP (color fijo, no personalizable)
+════════════════════════════════════════ */
+.cta-btn-whatsapp {
+    background: transparent !important;
+    border-color: #25D366 !important;
+    color: #25D366 !important;
+    box-shadow: none !important;
+}
+.cta-btn-whatsapp:hover {
+    background: #25D366 !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
+/* El flotante es un ícono circular sólido, no un botón de texto: mantiene su propio look. */
+.whatsapp-float.cta-btn-whatsapp,
+.whatsapp-float.cta-btn-whatsapp:hover {
+    background: #25D366 !important;
+    border: none !important;
+    color: #fff !important;
 }
 
 /* ════════════════════════════════════════
@@ -236,7 +263,7 @@
 }
 @media (min-width: 900px) { .nav-links { display: flex; } }
 .nav-links a {
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 500;
     color: color-mix(in srgb, var(--color-brand-dark) 75%, white);
     transition: color 0.2s;
@@ -634,13 +661,15 @@
     font-family: var(--font-sans);
 }
 .area-card:hover h3 { color: #fff; }
-.area-card p {
+.area-card p,
+.area-card div {
     font-size: 0.875rem;
     color: color-mix(in srgb, var(--color-brand-dark) 64%, white);
     line-height: 1.65;
     transition: color 0.3s;
 }
-.area-card:hover p { color: rgba(255,255,255,0.8); }
+.area-card:hover p,
+.area-card:hover div { color: rgba(255,255,255,0.8); }
 
 /* ════════════════════════════════════════
    SOBRE MÍ
@@ -843,7 +872,8 @@
     margin-bottom: 0.625rem;
     font-family: var(--font-sans);
 }
-.timeline-card p {
+.timeline-card p,
+.timeline-card div {
     font-size: 0.875rem;
     color: rgba(255,255,255,0.55);
     line-height: 1.7;
@@ -932,7 +962,7 @@
     position: absolute;
     top: 1.25rem;
     right: 1.25rem;
-    background: var(--color-accent);
+    background: #C62828;
     color: #fff;
     font-size: 0.6875rem;
     font-weight: 700;
@@ -1284,7 +1314,7 @@
    CTA BANNER
 ════════════════════════════════════════ */
 .cta-banner {
-    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    background: var(--color-brand-dark);
     padding: 5rem 0;
     position: relative;
     overflow: hidden;
@@ -1544,6 +1574,10 @@
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+.input-field::placeholder {
+    color: #b0b6c0;
+    opacity: 1;
 }
 .card {
     background: white;

@@ -37,7 +37,7 @@
         </div>
         <div>
             <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción</label>
-            <textarea name="subtitle" rows="2" class="input-field">{{ old('subtitle', $section?->subtitle) }}</textarea>
+            <textarea id="planes-subtitle-editor" name="subtitle" rows="2" class="input-field">{{ old('subtitle', $section?->subtitle) }}</textarea>
         </div>
         <div>
             <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">
@@ -118,4 +118,8 @@
         </tbody>
     </table>
 </div>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#planes-subtitle-editor', { height: 150 }));</script>
+@endpush
 @endsection

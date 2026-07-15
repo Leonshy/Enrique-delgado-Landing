@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\HtmlSanitizer;
 use App\Http\Controllers\Controller;
 use App\Models\LandingSection;
 use App\Models\ProcessStep;
@@ -66,7 +67,7 @@ class ProcessStepController extends Controller
 
         $section->update([
             'title'     => $request->title,
-            'subtitle'  => $request->subtitle,
+            'subtitle'  => HtmlSanitizer::clean($request->subtitle),
             'is_active' => $request->boolean('is_active'),
             'extra'     => json_encode($extra),
         ]);
@@ -76,12 +77,16 @@ class ProcessStepController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'step_number' => ['required', 'integer'],
             'title'       => ['required', 'string', 'max:150'],
-            'description' => ['required', 'string'],
+            'description' => ['required', 'string', 'max:255'],
             'icon'        => ['nullable', 'string', 'max:50'],
             'order'       => ['nullable', 'integer'],
         ]);
+
+        $data['description'] = HtmlSanitizer::clean($data['description']);
+
+        return $data;
     }
 }

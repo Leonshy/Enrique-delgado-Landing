@@ -37,7 +37,7 @@
 
         <div>
             <label class="block text-sm font-medium mb-1" style="color:var(--color-brand-dark);">Descripción</label>
-            <textarea name="subtitle" rows="3" class="input-field"
+            <textarea id="contacto-subtitle-editor" name="subtitle" rows="3" class="input-field"
                       placeholder="Completa el siguiente formulario y me pondré en contacto...">{{ old('subtitle', $section->subtitle) }}</textarea>
         </div>
     </div>
@@ -77,4 +77,8 @@
         <a href="{{ route('home') }}#contacto" target="_blank" class="btn-outline">Ver sección</a>
     </div>
 </form>
+
+@push('scripts')
+<script>document.addEventListener('DOMContentLoaded', () => initRichEditor('#contacto-subtitle-editor', { height: 150 }));</script>
+@endpush
 @endsection

@@ -141,6 +141,11 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
                 Tipografía
             </a>
+            <a href="{{ route('admin.settings.buttons') }}"
+               class="admin-sidebar-link {{ request()->routeIs('admin.settings.buttons') ? 'active' : '' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="8" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+                Botones
+            </a>
             <a href="{{ route('admin.seo.index') }}"
                class="admin-sidebar-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -210,8 +215,9 @@
             menubar: false,
             branding: false,
             plugins: 'lists link autolink',
-            toolbar: 'bold italic underline | bullist numlist | link | removeformat | undo redo',
-            content_style: "body { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-sans'] }}; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; }",
+            toolbar: 'blocks | bold italic underline | bullist numlist | link | removeformat | undo redo',
+            block_formats: 'Párrafo=p; Título 2=h2; Título 3=h3; Título 4=h4; Título 5=h5',
+            content_style: "body { font-family: {{ \App\Helpers\FontHelper::cssVars()['--font-sans'] }}; font-size: 15px; color: {{ \App\Helpers\ThemeHelper::resolvedColors()['--color-brand-dark'] }}; line-height: 1.6; } h2,h3,h4,h5 { font-weight: 600; margin: 0.5em 0; }",
         }, options));
     };
 
