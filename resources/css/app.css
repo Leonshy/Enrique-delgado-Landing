@@ -430,7 +430,6 @@
         padding-left: 3rem;
         padding-right: 3rem;
     }
-    .hero h1 { max-width: 520px; }
     .hero-desc { max-width: 440px; }
 }
 .hero-badge {
@@ -455,7 +454,7 @@
     line-height: 1.1;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    max-width: 600px;
+    max-width: 14ch;
 }
 .hero h1 em {
     font-style: italic;
