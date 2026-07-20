@@ -454,7 +454,7 @@
     line-height: 1.1;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    max-width: 14ch;
+    max-width: 18ch;
 }
 .hero h1 em {
     font-style: italic;
@@ -1597,6 +1597,29 @@
 .input-field::placeholder {
     color: #b0b6c0;
     opacity: 1;
+}
+.input-field[type="file"] {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.3;
+    cursor: pointer;
+    color: #6b7280;
+}
+.input-field[type="file"]::file-selector-button {
+    margin-right: 0.75rem;
+    padding: 0.45rem 0.85rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--color-primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.input-field[type="file"]::file-selector-button:hover {
+    background: var(--color-primary-dark, var(--color-primary));
+    filter: brightness(0.92);
 }
 .card {
     background: white;
