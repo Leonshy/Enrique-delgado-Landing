@@ -4,7 +4,7 @@
 
             {{-- Brand --}}
             <div>
-                <img src="{{ asset('images/logo-white-h.png') }}" alt="Enrique Delgado" class="footer-logo">
+                <img src="{{ $settings['logo_white'] ? asset('storage/'.$settings['logo_white']) : asset('images/logo-white-h.png') }}" alt="Enrique Delgado" class="footer-logo">
                 <p class="footer-desc">
                     Acompaño a personas que quieren transformar su vida emocional y construir una versión más plena de sí mismas. El cambio es posible.
                 </p>

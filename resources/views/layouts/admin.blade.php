@@ -198,6 +198,19 @@
                 {{ session('error') }}
             </div>
             @endif
+            @if($errors->any())
+            <div data-flash class="mb-6 px-5 py-4 rounded-xl text-sm font-medium text-white bg-red-500">
+                <div class="flex items-center gap-2 mb-1">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    <span>Revisá los siguientes errores:</span>
+                </div>
+                <ul class="list-disc list-inside space-y-0.5">
+                    @foreach($errors->all() as $message)
+                    <li>{{ $message }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             @yield('content')
         </div>

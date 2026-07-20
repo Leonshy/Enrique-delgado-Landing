@@ -52,10 +52,10 @@ class SettingsController extends Controller
         $imageKeys = ['logo_color', 'logo_white', 'isotipo', 'favicon'];
 
         $request->validate([
-            'logo_color' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
-            'logo_white' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
-            'isotipo'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
-            'favicon'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:2048'],
+            'logo_color' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:5120'],
+            'logo_white' => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:5120'],
+            'isotipo'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:5120'],
+            'favicon'    => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,svg', 'max:5120'],
         ]);
 
         foreach ($textKeys as $key) {

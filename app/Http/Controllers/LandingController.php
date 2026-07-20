@@ -74,6 +74,8 @@ class LandingController extends Controller
                 'location'    => SettingsHelper::get('location'),
                 'schedule'    => SettingsHelper::get('schedule'),
                 'footer_text' => SettingsHelper::get('footer_text', ''),
+                'logo_color'  => SettingsHelper::get('logo_color', ''),
+                'logo_white'  => SettingsHelper::get('logo_white', ''),
             ],
             'integrations' => [
                 'hcaptcha_enabled'  => HcaptchaHelper::isEnabledFor('contacto'),

@@ -3,7 +3,7 @@
 
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Enrique Delgado - El Psicólogo del Cambio">
-            <img src="{{ asset('images/logo.png') }}"
+            <img src="{{ $settings['logo_color'] ? asset('storage/'.$settings['logo_color']) : asset('images/logo.png') }}"
                  alt="Enrique Delgado">
         </a>
 
