@@ -19,7 +19,7 @@
 
         @php $navbarBtn = \App\Helpers\ButtonHelper::resolveKey('navbar_cta'); @endphp
         <div class="nav-cta-wrap">
-            <x-cta-button :btn="$navbarBtn" class="btn-primary" style="padding:0.7rem 1.5rem;font-size:0.875rem;" />
+            <x-cta-button :btn="$navbarBtn" class="btn-primary navbar-cta-link" style="padding:0.7rem 1.5rem;font-size:0.875rem;" />
             {{-- Hamburger --}}
             <button id="nav-hamburger" aria-label="Abrir menú">
                 <span></span><span></span><span></span>

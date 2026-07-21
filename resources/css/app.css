@@ -282,6 +282,7 @@
 }
 .nav-links a:hover { color: var(--color-primary); }
 .nav-cta-wrap { display: flex; align-items: center; gap: 1rem; }
+@media (max-width: 899px) { .navbar-cta-link { display: none; } }
 
 .nav-cta-btn {
     display: inline-flex;
